@@ -56,9 +56,11 @@ namespace Fodder.Core
                 else
                 {
                    s.Active = false;
+                   if(s.Team==0) GameSession.Instance.Team1SoulCount++;
+                   if (s.Team == 1) GameSession.Instance.Team2SoulCount++; 
                 }
 
-                s.ScreenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, GameSession.Instance.Viewport.Height - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (s.Position * GameSession.Instance.Map.Zoom));
+                s.ScreenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, (GameSession.Instance.Viewport.Height- GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (s.Position * GameSession.Instance.Map.Zoom));
 
                 if (s.Position.Y < 0)
                 {

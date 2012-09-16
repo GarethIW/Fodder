@@ -61,6 +61,8 @@ namespace Fodder.Core
         internal int Team2PlantedCount;
         internal int Team1DeadCount;
         internal int Team2DeadCount;
+        internal int Team1SoulCount;
+        internal int Team2SoulCount;
 
         internal bool Team1Win;
         internal bool Team2Win;
@@ -70,6 +72,8 @@ namespace Fodder.Core
         internal List<Function> AvailableFunctions;
 
         internal bool IsAttractMode;
+
+        internal int ScreenBottom;
 
         AIController AI1 = new AIController();
         AIController AI2 = new AIController();
@@ -94,6 +98,8 @@ namespace Fodder.Core
 
             Team1DeadCount = 0;
             Team2DeadCount = 0;
+            Team1SoulCount = 0;
+            Team2SoulCount = 0;
 
             Team1Win = false;
             Team2Win = false;
@@ -113,6 +119,8 @@ namespace Fodder.Core
             Viewport = vp;
 
             IsAttractMode = attractmode;
+
+            ScreenBottom = (IsAttractMode ? 0 : 60);
 
             this.PlayerControls = playerControls;
 

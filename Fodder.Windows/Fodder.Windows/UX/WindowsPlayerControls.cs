@@ -91,7 +91,7 @@ namespace Fodder.Windows.UX
 
         public Boolean Reset
         {
-            get { return this._KeyboardObserver.IsKeyPressed(Keys.Escape); }
+            get { return this._KeyboardObserver.IsKeyPressed(Keys.F12); }
         }
 
         public Boolean IsButtonShortcutKeyPressed(Keys key)

@@ -144,7 +144,7 @@ namespace Fodder.Core
                 }
             }
 
-            _screenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, GameSession.Instance.Viewport.Height - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (Position * GameSession.Instance.Map.Zoom));
+            _screenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, (GameSession.Instance.Viewport.Height- GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (Position * GameSession.Instance.Map.Zoom));
 
             WeaponPosition = Position + (Weapon.WeaponOffset * new Vector2(PathDirection, 1));
             HitPosition = Position + new Vector2(0, -(_sourceRect.Width / 2));
@@ -212,6 +212,9 @@ namespace Fodder.Core
                     break;
                 case "pistol":
                     Weapon = new Pistol(this);
+                    break;
+                case "smg":
+                    Weapon = new SMG(this);
                     break;
                 case "sniper":
                     Weapon = new Sniper(this);

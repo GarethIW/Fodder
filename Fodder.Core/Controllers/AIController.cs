@@ -163,7 +163,7 @@ namespace Fodder.Core
             }
 
             // use mortar
-            if (Actions[6].CurrentCooldown <= 0 && Actions[6].IsEnabled)
+            if (Actions[7].CurrentCooldown <= 0 && Actions[7].IsEnabled)
             {
                 if (TeamInOrder.Count > 6)
                 {
@@ -173,7 +173,7 @@ namespace Fodder.Core
                         {
                             if (GameSession.Instance.DudeController.EnemyInRange(TeamInOrder[i], 1000, false) != null)
                             {
-                                ActivateFunction(Actions[6], TeamInOrder[i]);
+                                ActivateFunction(Actions[7], TeamInOrder[i]);
                                 return;
                             }
                         }
@@ -187,7 +187,7 @@ namespace Fodder.Core
                         {
                             if (GameSession.Instance.DudeController.EnemyInRange(TeamInOrder[i], 1000, false) != null)
                             {
-                                ActivateFunction(Actions[6], TeamInOrder[i]);
+                                ActivateFunction(Actions[7], TeamInOrder[i]);
                                 return;
                             }
                         }
@@ -196,7 +196,7 @@ namespace Fodder.Core
             }
 
             // use sniper
-            if (Actions[4].CurrentCooldown <= 0 && Actions[4].IsEnabled)
+            if (Actions[5].CurrentCooldown <= 0 && Actions[5].IsEnabled)
             {
                 if (TeamInOrder.Count > 3)
                 {
@@ -206,7 +206,7 @@ namespace Fodder.Core
                         {
                             if (GameSession.Instance.DudeController.EnemyInRange(TeamInOrder[i], 2000, true) != null)
                             {
-                                ActivateFunction(Actions[4], TeamInOrder[i]);
+                                ActivateFunction(Actions[5], TeamInOrder[i]);
                                 return;
                             }
                         }
@@ -220,7 +220,7 @@ namespace Fodder.Core
                         {
                             if (GameSession.Instance.DudeController.EnemyInRange(TeamInOrder[i], 2000,  true) != null)
                             {
-                                ActivateFunction(Actions[4], TeamInOrder[i]);
+                                ActivateFunction(Actions[5], TeamInOrder[i]);
                                 return;
                             }
                         }
@@ -284,12 +284,38 @@ namespace Fodder.Core
                 }
             }
 
-            
 
+            // use SMG
+            if (Actions[4].CurrentCooldown <= 0 && Actions[4].IsEnabled)
+            {
+                if (TeamInOrder.Count > 2)
+                {
+                    for (int i = 2; i < TeamInOrder.Count; i++)
+                    {
+                        if (TeamInOrder[i].Weapon.GetType() == typeof(Weapons.Sword))
+                        {
+                            ActivateFunction(Actions[4], TeamInOrder[i]);
+                            return;
+                        }
+                    }
+
+                }
+                else
+                {
+                    for (int i = TeamInOrder.Count - 1; i >= 0; i--)
+                    {
+                        if (TeamInOrder[i].Weapon.GetType() == typeof(Weapons.Sword))
+                        {
+                            ActivateFunction(Actions[4], TeamInOrder[i]);
+                            return;
+                        }
+                    }
+                }
+            }
             
 
             // use machine gun
-            if (Actions[5].CurrentCooldown <= 0 && Actions[5].IsEnabled)
+            if (Actions[6].CurrentCooldown <= 0 && Actions[6].IsEnabled)
             {
                 if (TeamInOrder.Count > 5)
                 {
@@ -297,7 +323,7 @@ namespace Fodder.Core
                     {
                         if (TeamInOrder[i].Weapon.GetType() == typeof(Weapons.Sword) && TeamInOrder[i].Position.X > 10 && TeamInOrder[i].Position.X < GameSession.Instance.Map.Width - 10)
                         {
-                            ActivateFunction(Actions[5], TeamInOrder[i]);
+                            ActivateFunction(Actions[6], TeamInOrder[i]);
                             return;
                         }
                     }
@@ -308,7 +334,7 @@ namespace Fodder.Core
                     {
                         if (TeamInOrder[i].Weapon.GetType() == typeof(Weapons.Sword) && TeamInOrder[i].Position.X > 10 && TeamInOrder[i].Position.X < GameSession.Instance.Map.Width - 10)
                         {
-                            ActivateFunction(Actions[5], TeamInOrder[i]);
+                            ActivateFunction(Actions[6], TeamInOrder[i]);
                             return;
                         }
                     }

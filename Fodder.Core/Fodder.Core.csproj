@@ -50,6 +50,7 @@
     <Compile Include="UX\IHumanPlayerControls.cs" />
     <Compile Include="UX\ScrollDirection.cs" />
     <Compile Include="UX\ZoomDirection.cs" />
+    <Compile Include="Weapons\SMG.cs" />
     <Compile Include="Weapons\MachineGun.cs" />
     <Compile Include="Weapons\Mortar.cs" />
     <Compile Include="Weapons\Pistol.cs" />

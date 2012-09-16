@@ -105,7 +105,7 @@ namespace Fodder.Core
 
             ScrollPos = Vector2.Lerp(ScrollPos, _lerpScroll, 0.1f);
             ScrollPos = Vector2.Clamp(_lerpScroll, Vector2.Zero, new Vector2((Width * Zoom) - GameSession.Instance.Viewport.Width, (Height * Zoom) - GameSession.Instance.Viewport.Height));
-            _lerpScroll = Vector2.Clamp(_lerpScroll, Vector2.Zero, new Vector2((Width * Zoom) - GameSession.Instance.Viewport.Width, (Height * Zoom) - GameSession.Instance.Viewport.Height));
+            _lerpScroll = Vector2.Clamp(_lerpScroll, Vector2.Zero, new Vector2((Width * Zoom) - GameSession.Instance.Viewport.Width, (Height * Zoom) - (GameSession.Instance.Viewport.Height-GameSession.Instance.ScreenBottom)));
 
         }
 
@@ -116,7 +116,7 @@ namespace Fodder.Core
             float x = -ScrollPos.X;
             for (int i = 0; i < _numScreens; i++)
             {
-                sb.Draw(_texFG[i], new Vector2(x, sb.GraphicsDevice.Viewport.Height), null, Color.White,
+                sb.Draw(_texFG[i], new Vector2(x, sb.GraphicsDevice.Viewport.Height - GameSession.Instance.ScreenBottom), null, Color.White,
                         0f, new Vector2(0, _texFG[i].Height), Zoom, SpriteEffects.None, 1);
                 x += _texFG[i].Width * Zoom;
             }
@@ -131,7 +131,7 @@ namespace Fodder.Core
 
             sb.Draw(_texSky, Vector2.Zero, null, Color.White, 0f, Vector2.Zero,1f, SpriteEffects.None, 1f);
 
-            float y = sb.GraphicsDevice.Viewport.Height;
+            float y = sb.GraphicsDevice.Viewport.Height - GameSession.Instance.ScreenBottom;
             for (int i = 0; i < 3; i++)
             {
                 float x = -ScrollPos.X / (i+2);

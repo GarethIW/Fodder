@@ -70,9 +70,13 @@ namespace Fodder.Phone.GameState
             funcs.Add(new Function("shield", 10000, true));
             funcs.Add(new Function("pistol", 4000, true));
             funcs.Add(new Function("shotgun", 6000, true));
+            funcs.Add(new Function("smg", 8000, true));
             funcs.Add(new Function("sniper", 30000, true));
             funcs.Add(new Function("machinegun", 30000, true));
             funcs.Add(new Function("mortar", 30000, true));
+            funcs.Add(new Function("haste", 20, true));
+            funcs.Add(new Function("meteors", 20, true));
+            funcs.Add(new Function("elite", 20, true));
 
             var playerControls = new WindowsPlayerControls(new MouseObserver(), new KeyboardObserver());
 
@@ -124,7 +128,7 @@ namespace Fodder.Phone.GameState
 
             spriteBatch.Begin();
             spriteBatch.Draw(texBG, fullscreen,
-                             Color.White * TransitionAlpha * (0.5f + (0.5f * TransitionPosition)));
+                             Color.White * (0.5f + (0.5f * TransitionPosition)));
 
             spriteBatch.Draw(texLogo, new Vector2(viewport.Width/2, viewport.Height/4), null,
                              Color.White * TransitionAlpha, 0f, new Vector2(texLogo.Width / 2, texLogo.Height / 2), 1f + (TransitionPosition * 10f), SpriteEffects.None, 1);

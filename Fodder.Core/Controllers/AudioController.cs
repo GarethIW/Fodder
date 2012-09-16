@@ -34,6 +34,7 @@ namespace Fodder.Core
 
             effects.Add("explode", content.Load<SoundEffect>("audio/sfx/explode"));
             effects.Add("hit", content.Load<SoundEffect>("audio/sfx/hit"));
+            effects.Add("smg", content.Load<SoundEffect>("audio/sfx/smg"));
             effects.Add("machinegun", content.Load<SoundEffect>("audio/sfx/machinegun"));
             effects.Add("mortar", content.Load<SoundEffect>("audio/sfx/mortar"));
             effects.Add("pistol", content.Load<SoundEffect>("audio/sfx/pistol"));

@@ -28,14 +28,18 @@ namespace Fodder.Core
         {
             _texButtons = content.Load<Texture2D>("buttonsheet");
 
-            Vector2 screenPos = new Vector2((GameSession.Instance.Viewport.Width/2) - (700/2),20);
-            Buttons.Add(new Button(_texButtons, 0, GameSession.Instance.AvailableFunctions[0].CoolDown, GameSession.Instance.AvailableFunctions[0].Name, screenPos + new Vector2(100 * Buttons.Count, 0), Keys.D1, GameSession.Instance.AvailableFunctions[0].IsEnabled));
-            Buttons.Add(new Button(_texButtons, 1, GameSession.Instance.AvailableFunctions[1].CoolDown, GameSession.Instance.AvailableFunctions[1].Name, screenPos + new Vector2(100 * Buttons.Count, 0), Keys.D2, GameSession.Instance.AvailableFunctions[1].IsEnabled));
-            Buttons.Add(new Button(_texButtons, 2, GameSession.Instance.AvailableFunctions[2].CoolDown, GameSession.Instance.AvailableFunctions[2].Name, screenPos + new Vector2(100 * Buttons.Count, 0), Keys.D3, GameSession.Instance.AvailableFunctions[2].IsEnabled));
-            Buttons.Add(new Button(_texButtons, 3, GameSession.Instance.AvailableFunctions[3].CoolDown, GameSession.Instance.AvailableFunctions[3].Name, screenPos + new Vector2(100 * Buttons.Count, 0), Keys.D4, GameSession.Instance.AvailableFunctions[3].IsEnabled));
-            Buttons.Add(new Button(_texButtons, 4, GameSession.Instance.AvailableFunctions[4].CoolDown, GameSession.Instance.AvailableFunctions[4].Name, screenPos + new Vector2(100 * Buttons.Count, 0), Keys.D5, GameSession.Instance.AvailableFunctions[4].IsEnabled));
-            Buttons.Add(new Button(_texButtons, 5, GameSession.Instance.AvailableFunctions[5].CoolDown, GameSession.Instance.AvailableFunctions[5].Name, screenPos + new Vector2(100 * Buttons.Count, 0), Keys.D6, GameSession.Instance.AvailableFunctions[5].IsEnabled));
-            Buttons.Add(new Button(_texButtons, 6, GameSession.Instance.AvailableFunctions[6].CoolDown, GameSession.Instance.AvailableFunctions[6].Name, screenPos + new Vector2(100 * Buttons.Count, 0), Keys.D7, GameSession.Instance.AvailableFunctions[6].IsEnabled));
+            Vector2 screenPos = new Vector2((GameSession.Instance.Viewport.Width/2) - (660/2),GameSession.Instance.Viewport.Height-60);
+            Buttons.Add(new Button(_texButtons, 0, GameSession.Instance.AvailableFunctions[0].CoolDown, GameSession.Instance.AvailableFunctions[0].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.Tab, 0, GameSession.Instance.AvailableFunctions[0].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 1, GameSession.Instance.AvailableFunctions[1].CoolDown, GameSession.Instance.AvailableFunctions[1].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D1, 0, GameSession.Instance.AvailableFunctions[1].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 2, GameSession.Instance.AvailableFunctions[2].CoolDown, GameSession.Instance.AvailableFunctions[2].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D2, 0, GameSession.Instance.AvailableFunctions[2].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 3, GameSession.Instance.AvailableFunctions[3].CoolDown, GameSession.Instance.AvailableFunctions[3].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D3, 0, GameSession.Instance.AvailableFunctions[3].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 4, GameSession.Instance.AvailableFunctions[4].CoolDown, GameSession.Instance.AvailableFunctions[4].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D4, 0, GameSession.Instance.AvailableFunctions[4].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 5, GameSession.Instance.AvailableFunctions[5].CoolDown, GameSession.Instance.AvailableFunctions[5].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D5, 0, GameSession.Instance.AvailableFunctions[5].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 6, GameSession.Instance.AvailableFunctions[6].CoolDown, GameSession.Instance.AvailableFunctions[6].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D6, 0, GameSession.Instance.AvailableFunctions[6].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 7, GameSession.Instance.AvailableFunctions[7].CoolDown, GameSession.Instance.AvailableFunctions[7].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D7, 0, GameSession.Instance.AvailableFunctions[7].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 8, GameSession.Instance.AvailableFunctions[8].CoolDown, GameSession.Instance.AvailableFunctions[8].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D8, 1, GameSession.Instance.AvailableFunctions[8].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 9, GameSession.Instance.AvailableFunctions[9].CoolDown, GameSession.Instance.AvailableFunctions[9].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D9, 2, GameSession.Instance.AvailableFunctions[9].IsEnabled));
+            Buttons.Add(new Button(_texButtons, 10, GameSession.Instance.AvailableFunctions[10].CoolDown, GameSession.Instance.AvailableFunctions[10].Name, screenPos + new Vector2(60 * Buttons.Count, 0), Keys.D0, 3, GameSession.Instance.AvailableFunctions[10].IsEnabled));
         }
 
         public void Update(GameTime gameTime)

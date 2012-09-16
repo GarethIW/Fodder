@@ -54,8 +54,8 @@ namespace Fodder.Core
                     d.Active = false;
                     GameSession.Instance.SoulController.Add(d.Position, d.Team);
                     GameSession.Instance.ParticleController.AddGibs(d.HitPosition, d.Team);
-                    if (d.Team == 0) GameSession.Instance.Team1DeadCount++;
-                    if (d.Team == 1) GameSession.Instance.Team2DeadCount++;
+                    if (d.Team == 0) { GameSession.Instance.Team1DeadCount++; }
+                    if (d.Team == 1) { GameSession.Instance.Team2DeadCount++; }
                 }
             }
         }
