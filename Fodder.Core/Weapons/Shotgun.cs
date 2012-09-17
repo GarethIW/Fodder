@@ -56,7 +56,7 @@ namespace Fodder.Core.Weapons
 
             CurrentAmmo--;
 
-            AudioController.PlaySFX("shotgun", 0.75f * GameSession.Instance.Map.Zoom, ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 2f) + 0.2f, ((2f / GameSession.Instance.Viewport.Width) * Owner._screenRelativePosition.X) - 1f);
+            AudioController.PlaySFX("shotgun", 0.6f * GameSession.Instance.Map.Zoom, ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 2f) + 0.2f, ((2f / GameSession.Instance.Viewport.Width) * Owner._screenRelativePosition.X) - 1f);
 
             base.Attack(targetDude);
         }

@@ -54,8 +54,8 @@ namespace Fodder.Core
                     d.Active = false;
                     GameSession.Instance.SoulController.Add(d.Position, d.Team);
                     GameSession.Instance.ParticleController.AddGibs(d.HitPosition, d.Team);
-                    if (d.Team == 0) GameSession.Instance.Team1DeadCount++;
-                    if (d.Team == 1) GameSession.Instance.Team2DeadCount++;
+                    if (d.Team == 0) { GameSession.Instance.Team1DeadCount++; }
+                    if (d.Team == 1) { GameSession.Instance.Team2DeadCount++; }
                 }
             }
         }
@@ -84,9 +84,7 @@ namespace Fodder.Core
                             GameSession.Instance.ButtonController.DudeClicked(d);
                         }
                     }
-                    else d.UIHover = false;
                 }
-                else d.UIHover = false;
             }
         }
 
@@ -121,6 +119,36 @@ namespace Fodder.Core
                 {
                     d.Spawn(spawnPos, team);
                     break;
+                }
+        }
+
+        public void AddEliteSquad(Vector2 spawnPos, int team)
+        {
+            int count = 0;
+            foreach (Dude d in Dudes)
+                if (!d.Active)
+                {
+                    d.Spawn(spawnPos, team);
+                    d.BoostTime = 20000;
+                    if (count == 2) d.ShieldTime = 20000;
+                    switch (Rand.Next(3))
+                    {
+                        case 0:
+                            d.GiveWeapon("pistol");
+                            d.Weapon.CurrentAmmo = 20;
+                            break;
+                        case 1:
+                            d.GiveWeapon("shotgun");
+                            d.Weapon.CurrentAmmo = 16;
+                            break;
+                        case 2:
+                            d.GiveWeapon("smg");
+                            d.Weapon.CurrentAmmo = 60;
+                            break;
+                    }
+                    count++;
+                    spawnPos += new Vector2((team == 0 ? -50 : 50), 0);
+                    if (count == 5) break;
                 }
         }
 

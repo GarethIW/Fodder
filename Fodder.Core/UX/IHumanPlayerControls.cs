@@ -51,5 +51,10 @@
         /// <param name="key">The key to check the pressed status of.</param>
         /// <returns>True if the key is pressed.</returns>
         Boolean IsButtonShortcutKeyPressed(Keys key);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        Boolean IsPhone { get; }
     }
 }

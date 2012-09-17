@@ -80,7 +80,7 @@ namespace Fodder.Core
             foreach (Particle p in Particles)
             {
                 sb.Draw(_texParticles, 
-                        -GameSession.Instance.Map.ScrollPos + (new Vector2(0, sb.GraphicsDevice.Viewport.Height - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (p.Position * GameSession.Instance.Map.Zoom)),
+                        -GameSession.Instance.Map.ScrollPos + (new Vector2(0, (sb.GraphicsDevice.Viewport.Height- GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (p.Position * GameSession.Instance.Map.Zoom)),
                         p.SourceRect, Color.White * p.Alpha, p.Rotation, new Vector2(p.SourceRect.Width / 2, p.SourceRect.Height / 2), GameSession.Instance.Map.Zoom, SpriteEffects.None, 1);
             }
 
@@ -150,6 +150,12 @@ namespace Fodder.Core
                 Add(hitpos + new Vector2(-10, 10), new Vector2((float)(Rand.NextDouble() * 4) - 2f, (float)(Rand.NextDouble() * 4) - 2f), 5000, true, new Rectangle(56, 28, 12, 11), (float)(Rand.NextDouble() / 10) - 0.05f);
                 Add(hitpos + new Vector2(10, 10), new Vector2((float)(Rand.NextDouble() * 4) - 2f, (float)(Rand.NextDouble() * 4) - 2f), 5000, true, new Rectangle(73, 28, 12, 11), (float)(Rand.NextDouble() / 10) - 0.05f);
             }
+        }
+
+        public void AddBoost(Vector2 dudePos)
+        {
+            Vector2 spawnPos = dudePos + new Vector2((float)(Rand.NextDouble() * 20) - 10, -(float)(Rand.NextDouble() * 10));
+            Add(spawnPos, new Vector2(0, -0.1f), 100, false, new Rectangle(0, 10, 3, 3), (float)(Rand.NextDouble() / 10) - 0.05f);
         }
 
         internal void Reset()

@@ -13,11 +13,35 @@ using Fodder.Core.UX;
 
 namespace Fodder.Core
 {
+    public class Scenario
+    {
+        public List<Function> AvailableFunctions;
+        public int AIReactionTime, T1Reinforcements, T2Reinforcements;
+        public double T1SpawnRate, T2SpawnRate;
+        public string MapName, ScenarioName;
+
+        public Scenario() { }
+
+        public Scenario(string name, string mapname, List<Function> funcs, int aireactiontime, int t1reinforcements, int t2reinforcements, double t1spawnrate, double t2spawnrate)
+        {
+            ScenarioName = name;
+            MapName = mapname;
+            AvailableFunctions = funcs;
+            AIReactionTime = aireactiontime;
+            T1Reinforcements = t1reinforcements;
+            T2Reinforcements = t2reinforcements;
+            T1SpawnRate = t1spawnrate;
+            T2SpawnRate = t2spawnrate;
+        }
+    }
+
     public class Function
     {
         public string Name;
         public double CoolDown;
         public bool IsEnabled;
+
+        public Function() { }
 
         public Function(string name, double cd, bool enabled)
         {
@@ -61,6 +85,8 @@ namespace Fodder.Core
         internal int Team2PlantedCount;
         internal int Team1DeadCount;
         internal int Team2DeadCount;
+        internal int Team1SoulCount;
+        internal int Team2SoulCount;
 
         internal bool Team1Win;
         internal bool Team2Win;
@@ -69,12 +95,16 @@ namespace Fodder.Core
 
         internal List<Function> AvailableFunctions;
 
+        internal bool IsAttractMode;
+
+        internal int ScreenBottom;
+
         AIController AI1 = new AIController();
         AIController AI2 = new AIController();
 
         private IHumanPlayerControls PlayerControls;
 
-        public GameSession(IHumanPlayerControls playerControls, GameClientType t1CT, GameClientType t2CT, double t1SpawnRate, double t2SpawnRate, int t1Reinforcements, int t2Reinforcements, List<Function> availableFunctions, string map, Viewport vp)
+        public GameSession(IHumanPlayerControls playerControls, GameClientType t1CT, GameClientType t2CT, Scenario scenario, Viewport vp, bool attractmode)
         {
             if (playerControls == null)
                 throw new ArgumentException("GameSession cannot be created without PlayerControls");
@@ -83,20 +113,22 @@ namespace Fodder.Core
 
             Team1ClientType = t1CT;
             Team2ClientType = t2CT;
-            Team1Reinforcements = t1Reinforcements;
-            Team2Reinforcements = t2Reinforcements;
-            Team1StartReinforcements = t1Reinforcements;
-            Team2StartReinforcements = t2Reinforcements;
-            Team1SpawnRate = t1SpawnRate;// *(double)scale;
-            Team2SpawnRate = t2SpawnRate;// *(double)scale;
+            Team1Reinforcements = scenario.T1Reinforcements;
+            Team2Reinforcements = scenario.T2Reinforcements;
+            Team1StartReinforcements = scenario.T1Reinforcements;
+            Team2StartReinforcements = scenario.T2Reinforcements;
+            Team1SpawnRate = scenario.T1SpawnRate;
+            Team2SpawnRate = scenario.T2SpawnRate;
 
             Team1DeadCount = 0;
             Team2DeadCount = 0;
+            Team1SoulCount = 0;
+            Team2SoulCount = 0;
 
             Team1Win = false;
             Team2Win = false;
 
-            AvailableFunctions = availableFunctions;
+            AvailableFunctions = scenario.AvailableFunctions;
 
             DudeController = new DudeController();
             ButtonController = new ButtonController();
@@ -105,14 +137,18 @@ namespace Fodder.Core
             ParticleController = new ParticleController();
             HUD = new HUD();
 
-            AI1.Initialize(5000);
-            AI2.Initialize(5000);
+            AI1.Initialize(scenario.AIReactionTime);
+            AI2.Initialize(scenario.AIReactionTime);
 
             Viewport = vp;
 
+            IsAttractMode = attractmode;
+
+            ScreenBottom = (IsAttractMode ? 0 : 60);
+
             this.PlayerControls = playerControls;
 
-            Map = new Map(map);
+            Map = new Map(scenario.MapName);
         }
 
         public void LoadContent(ContentManager content)
@@ -129,32 +165,47 @@ namespace Fodder.Core
 
         public void Update(GameTime gameTime)
         {
-            if (this.PlayerControls.Reset) this.Reset();
-
-            var zoomDir = this.PlayerControls.Zoom;
-            if (zoomDir == ZoomDirection.In) this.Map.DoZoom(0.05f, 0);
-            if (zoomDir == ZoomDirection.Out) this.Map.DoZoom(-0.05f, 0);
-
-            if (this.PlayerControls.Scroll == ScrollDirection.Left) this.Map.ScrollPos.X -= (10f);
-            if (this.PlayerControls.Scroll == ScrollDirection.Right) this.Map.ScrollPos.X += (10f);
-
             Map.Update(gameTime);
             DudeController.Update(gameTime);
 
             if (Team1ClientType == GameClientType.AI) AI1.Update(gameTime, 0);
-            else if (Team1ClientType == GameClientType.Human) DudeController.HandleInput(this.PlayerControls, 0);
             if (Team2ClientType == GameClientType.AI) AI2.Update(gameTime, 1);
-            else if (Team1ClientType == GameClientType.Human) DudeController.HandleInput(this.PlayerControls, 1);
 
-            ButtonController.Update(gameTime);
-            ButtonController.HandleInput(this.PlayerControls);
+            if (!IsAttractMode)
+            {
+                if (this.PlayerControls.Reset) this.Reset();
+
+                var zoomDir = this.PlayerControls.Zoom;
+                if (zoomDir == ZoomDirection.In) this.Map.DoZoom(0.05f, 0);
+                if (zoomDir == ZoomDirection.Out) this.Map.DoZoom(-0.05f, 0);
+
+                var scroll = 0f;
+                if (this.PlayerControls.Scroll == ScrollDirection.Right) scroll = -10f;
+                if (this.PlayerControls.Scroll == ScrollDirection.Left) scroll = 10f;
+                if (this.PlayerControls.IsPhone) scroll = scroll * 4;
+                if (scroll != 0f) this.Map.DoScroll(new Vector2(scroll, 0f));
+
+                if (Team1ClientType == GameClientType.Human) DudeController.HandleInput(this.PlayerControls, 0);
+                if (Team2ClientType == GameClientType.Human) DudeController.HandleInput(this.PlayerControls, 1);
+
+                ButtonController.Update(gameTime);
+                ButtonController.HandleInput(this.PlayerControls);
+            }
 
             SoulController.Update(gameTime);
             HUD.Update(gameTime);
             ProjectileController.Update(gameTime);
             ParticleController.Update(gameTime);
 
-            CalculateWinConditions(gameTime);
+            if (!IsAttractMode)
+            {
+                CalculateWinConditions(gameTime);
+            }
+            else
+            {
+                Team1Reinforcements = 100;
+                Team2Reinforcements = 100;
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -168,8 +219,11 @@ namespace Fodder.Core
             ParticleController.Draw(spriteBatch);
 
             // UI always comes last!
-            ButtonController.Draw(spriteBatch);
-            HUD.Draw(spriteBatch);
+            if (!IsAttractMode)
+            {
+                ButtonController.Draw(spriteBatch);
+                HUD.Draw(spriteBatch);
+            }
         }
 
         public void Reset()

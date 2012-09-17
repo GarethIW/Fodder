@@ -107,6 +107,7 @@ namespace Fodder.Core
                 // Effects
                 if (BoostTime > 0)
                 {
+                    GameSession.Instance.ParticleController.AddBoost(Position);
                     BoostTime -= gameTime.ElapsedGameTime.TotalMilliseconds;
 
                     _targetMoveTime = 0;
@@ -144,7 +145,7 @@ namespace Fodder.Core
                 }
             }
 
-            _screenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, GameSession.Instance.Viewport.Height - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (Position * GameSession.Instance.Map.Zoom));
+            _screenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, (GameSession.Instance.Viewport.Height- GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (Position * GameSession.Instance.Map.Zoom));
 
             WeaponPosition = Position + (Weapon.WeaponOffset * new Vector2(PathDirection, 1));
             HitPosition = Position + new Vector2(0, -(_sourceRect.Width / 2));
@@ -168,12 +169,15 @@ namespace Fodder.Core
             Weapon.Draw(sb);
 
             if (UIHover)
+            {
                 sb.Draw(texDude, _screenRelativePosition - new Vector2(0, 60 * GameSession.Instance.Map.Zoom), new Rectangle(80, 0, 20, 20),
                      Color.White,
                      0f,
                      new Vector2(10, 0),
                      GameSession.Instance.Map.Zoom,
                      SpriteEffects.None, 0);
+                UIHover = false;
+            }
         }
 
         public void DrawShield(SpriteBatch sb)
@@ -209,6 +213,9 @@ namespace Fodder.Core
                     break;
                 case "pistol":
                     Weapon = new Pistol(this);
+                    break;
+                case "smg":
+                    Weapon = new SMG(this);
                     break;
                 case "sniper":
                     Weapon = new Sniper(this);
