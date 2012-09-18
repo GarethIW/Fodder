@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XnaContent>
+  <Asset Type="System.String">
+    <![CDATA[
+<Scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AvailableFunctions>
+    <Function>
+      <Name>boost</Name>
+      <CoolDown>1000</CoolDown>
+      <IsEnabled>true</IsEnabled>
+    </Function>
+    <Function>
+      <Name>shield</Name>
+      <CoolDown>10000</CoolDown>
+      <IsEnabled>true</IsEnabled>
+    </Function>
+    <Function>
+      <Name>pistol</Name>
+      <CoolDown>4000</CoolDown>
+      <IsEnabled>true</IsEnabled>
+    </Function>
+    <Function>
+      <Name>shotgun</Name>
+      <CoolDown>6000</CoolDown>
+      <IsEnabled>true</IsEnabled>
+    </Function>
+    <Function>
+      <Name>smg</Name>
+      <CoolDown>8000</CoolDown>
+      <IsEnabled>true</IsEnabled>
+    </Function>
+    <Function>
+      <Name>sniper</Name>
+      <CoolDown>30000</CoolDown>
+      <IsEnabled>false</IsEnabled>
+    </Function>
+    <Function>
+      <Name>machinegun</Name>
+      <CoolDown>30000</CoolDown>
+      <IsEnabled>false</IsEnabled>
+    </Function>
+    <Function>
+      <Name>mortar</Name>
+      <CoolDown>30000</CoolDown>
+      <IsEnabled>false</IsEnabled>
+    </Function>
+    <Function>
+      <Name>haste</Name>
+      <CoolDown>20</CoolDown>
+      <IsEnabled>false</IsEnabled>
+    </Function>
+    <Function>
+      <Name>meteors</Name>
+      <CoolDown>20</CoolDown>
+      <IsEnabled>false</IsEnabled>
+    </Function>
+    <Function>
+      <Name>elite</Name>
+      <CoolDown>20</CoolDown>
+      <IsEnabled>false</IsEnabled>
+    </Function>
+  </AvailableFunctions>
+  <AIReactionTime>10000</AIReactionTime>
+  <T1Reinforcements>30</T1Reinforcements>
+  <T2Reinforcements>30</T2Reinforcements>
+  <T1SpawnRate>5000</T1SpawnRate>
+  <T2SpawnRate>5000</T2SpawnRate>
+  <MapName>campaign4</MapName>
+  <ScenarioName>The Bulge</ScenarioName>
+</Scenario>]]>
+  </Asset>
+</XnaContent>

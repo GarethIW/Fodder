@@ -107,19 +107,19 @@ namespace Fodder.Core
             if (team == 0)
             {
                 int y = -800;
-                for (int x = -200; x < GameSession.Instance.Map.Width - 200; x += 200)
+                for (int x = -800; x < GameSession.Instance.Map.Width - 200; x += 200)
                 {
-                    GameSession.Instance.ProjectileController.Add(new Vector2(x, y), new Vector2(3f, 30f), 1.5f, true, true, 400, 0);
-                    y -=100;
+                    GameSession.Instance.ProjectileController.Add(new Vector2(x, y), new Vector2(0f, 10f), 1.5f, true, true, 300, 0);
+                    y -=200;
                 }
             }
             if (team == 1)
             {
                 int y = -800;
-                for (int x = GameSession.Instance.Map.Width + 200; x > 200; x -= 200)
+                for (int x = GameSession.Instance.Map.Width + 800; x > 200; x -= 200)
                 {
-                    GameSession.Instance.ProjectileController.Add(new Vector2(x, y), new Vector2(-3f, 30f), 1.5f, true, true, 400, 1);
-                    y -= 100;
+                    GameSession.Instance.ProjectileController.Add(new Vector2(x, y), new Vector2(-0f, 10f), 1.5f, true, true, 300, 1);
+                    y -= 200;
                 }
             }
         }

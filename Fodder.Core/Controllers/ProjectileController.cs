@@ -90,7 +90,7 @@ namespace Fodder.Core
         public void CalculateExplosion(Projectile p)
         {
             GameSession.Instance.ParticleController.AddExplosion(p.Position);
-            AudioController.PlaySFX("explode", 1f * GameSession.Instance.Map.Zoom, ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 1f) - 0.5f, ((2f / GameSession.Instance.Viewport.Width) * p._screenRelativePosition.X) - 1f);
+            AudioController.PlaySFX("explode", 1f * (GameSession.Instance.Map.Zoom * 1.5f), ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 1f) - 0.5f, ((2f / GameSession.Instance.Viewport.Width) * p._screenRelativePosition.X) - 1f);
             foreach (Dude d in GameSession.Instance.DudeController.Dudes)
             {
                 if (!d.Active) continue;

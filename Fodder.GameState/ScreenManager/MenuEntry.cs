@@ -170,7 +170,7 @@ namespace Fodder.GameState
         /// </summary>
         public virtual int GetHeight(MenuScreen screen)
         {
-            return screen.ScreenManager.Font.LineSpacing;
+            return screen.ScreenManager.Font.LineSpacing-15;
         }
 
 

@@ -14,6 +14,7 @@ using Fodder.Core;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
 using System.Xml.Serialization;
+using System;
 #endregion
 
 namespace Fodder.Windows.GameState
@@ -33,7 +34,8 @@ namespace Fodder.Windows.GameState
         public MainMenuScreen()
             : base("Main Menu")
         {
-            
+            TransitionOnTime = TimeSpan.FromSeconds(0.5);
+            TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
 
         public override void LoadContent()
@@ -76,15 +78,7 @@ namespace Fodder.Windows.GameState
         /// </summary>
         void CampaignGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            string scenarioXML = content.Load<string>("scenarios/1");
-            StringReader input = new StringReader(scenarioXML);
-            XmlSerializer xmls = new XmlSerializer(typeof(Scenario));
-            Scenario scenario = (Scenario)xmls.Deserialize(input);
-
-            ScreenManager.Game.ResetElapsedTime();
-
-            LoadingScreen.Load(ScreenManager, false, e.PlayerIndex,
-                               new GameplayScreen(scenario));
+            ScreenManager.AddScreen(new CampaignScreen(1), e.PlayerIndex);
         }
 
         void QuickGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)

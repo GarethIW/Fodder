@@ -126,20 +126,23 @@ namespace Fodder.Core
                 {
                     if ((GameSession.Instance.Team1Win && Team == 0) || (GameSession.Instance.Team2Win && Team == 1))
                     {
-                        // DO some kind of win anim
-                        if (!Jumping)
+                        if (Position.X > 0 && Position.X < GameSession.Instance.Map.Width)
                         {
-                            if (GameSession.Instance.DudeController.Rand.Next(100) == 1)
+                            // DO some kind of win anim
+                            if (!Jumping)
                             {
-                                Jumping = true;
-                                JumpSpeed = 2f;
+                                if (GameSession.Instance.DudeController.Rand.Next(100) == 1)
+                                {
+                                    Jumping = true;
+                                    JumpSpeed = 2f;
+                                }
                             }
-                        }
-                        else
-                        {
-                            Position += new Vector2(0, -1f * JumpSpeed);
-                            JumpSpeed -= (GameSession.Instance.Map.Gravity.Y * 2);
-                            if (Position.Y >= GameSession.Instance.Map.TryGetPath((int)Position.X, (int)Position.Y)) Jumping = false;
+                            else
+                            {
+                                Position += new Vector2(0, -1f * JumpSpeed);
+                                JumpSpeed -= (GameSession.Instance.Map.Gravity.Y * 2);
+                                if (Position.Y >= GameSession.Instance.Map.TryGetPath((int)Position.X, (int)Position.Y)) Jumping = false;
+                            }
                         }
                     }
                 }
@@ -150,7 +153,11 @@ namespace Fodder.Core
             WeaponPosition = Position + (Weapon.WeaponOffset * new Vector2(PathDirection, 1));
             HitPosition = Position + new Vector2(0, -(_sourceRect.Width / 2));
 
-            UIRect = new Rectangle((int)(_screenRelativePosition.X - ((_sourceRect.Width / 2) * GameSession.Instance.Map.Zoom)), (int)(_screenRelativePosition.Y - (_sourceRect.Height * GameSession.Instance.Map.Zoom)), (int)(_sourceRect.Width * GameSession.Instance.Map.Zoom), (int)(_sourceRect.Height * GameSession.Instance.Map.Zoom));
+            UIRect = new Rectangle((int)(_screenRelativePosition.X - ((_sourceRect.Width / 2) * GameSession.Instance.Map.Zoom)),
+                                   (int)(_screenRelativePosition.Y - (_sourceRect.Height * GameSession.Instance.Map.Zoom)), 
+                                   (int)(_sourceRect.Width * GameSession.Instance.Map.Zoom), 
+                                   (int)(_sourceRect.Height * GameSession.Instance.Map.Zoom));
+            UIRect.Inflate((int)((1f - GameSession.Instance.Map.Zoom) * 15f), (int)((1f - GameSession.Instance.Map.Zoom) * 15f));
             
         }
 
@@ -197,7 +204,7 @@ namespace Fodder.Core
         {
             if (GameSession.Instance.Team1Win && GameSession.Instance.Team2Win) return;
 
-            AudioController.PlaySFX("hit", 0.2f * GameSession.Instance.Map.Zoom, ((float)GameSession.Instance.DudeController.Rand.NextDouble() * 2f) - 1f, ((2f / GameSession.Instance.Viewport.Width) * _screenRelativePosition.X) - 1f);
+            AudioController.PlaySFX("hit", 0.2f * (GameSession.Instance.Map.Zoom * 1.5f), ((float)GameSession.Instance.DudeController.Rand.NextDouble() * 2f) - 1f, ((2f / GameSession.Instance.Viewport.Width) * _screenRelativePosition.X) - 1f);
 
             Health -= amount / (IsShielded?10:1);
         }

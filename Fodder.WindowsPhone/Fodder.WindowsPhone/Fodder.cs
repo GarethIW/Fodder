@@ -122,16 +122,16 @@ namespace Fodder.WindowsPhone
 
             base.Draw(gameTime);
 
-            var memuse = (long)DeviceExtendedProperties.GetValue("ApplicationPeakMemoryUsage");
-            var maxmem = (long)DeviceExtendedProperties.GetValue("DeviceTotalMemory");
-            var curmem = (long)DeviceExtendedProperties.GetValue("ApplicationCurrentMemoryUsage");
-            memuse /= 1024 * 1024;
-            maxmem /= 1024 * 1024;
-            curmem /= 1024 * 1024;
-            spriteBatch.Begin();
-            spriteBatch.DrawString(debugFont, "Mem Usage: " + curmem + "/" + memuse + "/" + maxmem, new Vector2(10, 10), Color.Black);
-            spriteBatch.DrawString(debugFont, "Mem Usage: " + curmem + "/" + memuse + "/" + maxmem, new Vector2(9, 9), Color.White);
-            spriteBatch.End();
+            //var memuse = (long)DeviceExtendedProperties.GetValue("ApplicationPeakMemoryUsage");
+            //var maxmem = (long)DeviceExtendedProperties.GetValue("DeviceTotalMemory");
+            //var curmem = (long)DeviceExtendedProperties.GetValue("ApplicationCurrentMemoryUsage");
+            //memuse /= 1024 * 1024;
+            //maxmem /= 1024 * 1024;
+            //curmem /= 1024 * 1024;
+            //spriteBatch.Begin();
+            //spriteBatch.DrawString(debugFont, "Mem Usage: " + curmem + "/" + memuse + "/" + maxmem, new Vector2(10, 10), Color.Black);
+            //spriteBatch.DrawString(debugFont, "Mem Usage: " + curmem + "/" + memuse + "/" + maxmem, new Vector2(9, 9), Color.White);
+            //spriteBatch.End();
         }
 
         float GetScaleFactor(Vector2 position1, Vector2 position2, Vector2 delta1, Vector2 delta2)

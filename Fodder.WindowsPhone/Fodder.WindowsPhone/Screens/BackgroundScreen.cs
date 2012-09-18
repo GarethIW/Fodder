@@ -35,6 +35,8 @@ namespace Fodder.Phone.GameState
 
         GameSession attractSession;
 
+        float logoAlpha = 1f;
+
         #endregion
 
         #region Initialization
@@ -80,7 +82,7 @@ namespace Fodder.Phone.GameState
 
             var playerControls = new WindowsPhonePlayerControls(new TouchObserver(), new ButtonObserver());
 
-            Scenario scenario = new Scenario("Attract", "4", funcs, 3000, 100, 100, 1000, 1000);
+            Scenario scenario = new Scenario("Attract", "attract", funcs, 3000, 100, 100, 1000, 1000);
 
             attractSession = new GameSession(playerControls, GameClientType.AI, GameClientType.AI, scenario, ScreenManager.GraphicsDevice.Viewport, true);
             attractSession.LoadContent(content);
@@ -113,6 +115,19 @@ namespace Fodder.Phone.GameState
         {
             attractSession.Update(gameTime);
 
+            bool found = false;
+            foreach (GameScreen screen in ScreenManager.GetScreens())
+            {
+                if (screen.GetType() == typeof(CampaignScreen))
+                    found = true;
+            }
+            if (found)
+                logoAlpha -= 0.05f;
+            else
+                logoAlpha += 0.05f;
+
+            logoAlpha = MathHelper.Clamp(logoAlpha, 0f, 1f);
+
             base.Update(gameTime, otherScreenHasFocus, false);
         }
 
@@ -132,8 +147,8 @@ namespace Fodder.Phone.GameState
             spriteBatch.Draw(texBG, fullscreen,
                              Color.White * (0.5f + (0.5f * TransitionPosition)));
 
-            spriteBatch.Draw(texLogo, new Vector2(viewport.Width/2, viewport.Height/4), null,
-                             Color.White * TransitionAlpha, 0f, new Vector2(texLogo.Width / 2, texLogo.Height / 2), 1f + (TransitionPosition * 10f), SpriteEffects.None, 1);
+            spriteBatch.Draw(texLogo, new Vector2(viewport.Width / 2, viewport.Height / 4), null,
+                             Color.White * TransitionAlpha * logoAlpha, 0f, new Vector2(texLogo.Width / 2, texLogo.Height / 2), 1f + (TransitionPosition * 10f), SpriteEffects.None, 1);
             spriteBatch.End();
         }
 

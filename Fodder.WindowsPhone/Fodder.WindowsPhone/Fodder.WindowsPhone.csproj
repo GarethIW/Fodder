@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\CampaignScreen.cs" />
     <Compile Include="UX\ButtonObserver.cs" />
     <Compile Include="UX\TouchAxis.cs" />
     <Compile Include="UX\TouchObserver.cs" />

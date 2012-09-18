@@ -25,7 +25,6 @@ namespace Fodder.Core
         double _currentCDTime = 0;
         double _actualCDTime = 0;
         Rectangle _sourceRectFull;
-        Rectangle _sourceRectEmpty;
 
         bool _buttonDown = false;
 
