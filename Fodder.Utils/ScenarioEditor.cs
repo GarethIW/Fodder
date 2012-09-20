@@ -41,6 +41,12 @@ namespace Fodder.Utils
                                              Convert.ToInt32(txtT1Spawn.Text),
                                              Convert.ToInt32(txtT2Spawn.Text));
 
+            scenario.GoldScore = Convert.ToInt32(txtGold.Text);
+            scenario.SilverScore = Convert.ToInt32(txtSilver.Text);
+            scenario.BronzeScore = Convert.ToInt32(txtBronze.Text);
+
+            scenario.CampaignMissionNum = Convert.ToInt32(txtMissionNum.Text);
+
             StringWriter output = new StringWriter(new StringBuilder());
             XmlSerializer xmls = new XmlSerializer(typeof(Scenario));
             xmls.Serialize(output, scenario);

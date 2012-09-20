@@ -60,12 +60,12 @@ namespace Fodder.Core
             sb.Draw(_texHud, _team2Bar + new Vector2(_barWidth - reinforcementswidth - activewidth, 0), new Rectangle(_barWidth - reinforcementswidth - activewidth, _barHeight, activewidth, _barHeight), Color.White);
             sb.Draw(_texHud, _team2Bar + new Vector2(_barWidth - reinforcementswidth, 0), new Rectangle(_barWidth - reinforcementswidth, _barHeight * 2, reinforcementswidth, _barHeight), Color.White);
 
-            if (GameSession.Instance.Team1Win && GameSession.Instance.Team2Win) sb.DrawString(_font, "Nobody wins", new Vector2(GameSession.Instance.Viewport.Width, GameSession.Instance.Viewport.Height) / 2, Color.White, 0f, _font.MeasureString("Nobody wins") / 2, 1f, SpriteEffects.None, 1);
-            else
-            {
-                if (GameSession.Instance.Team1Win) sb.DrawString(_font, "Reds Win", new Vector2(GameSession.Instance.Viewport.Width, GameSession.Instance.Viewport.Height) / 2, Color.White, 0f, _font.MeasureString("Reds Win") / 2, 1f, SpriteEffects.None, 1);
-                if (GameSession.Instance.Team2Win) sb.DrawString(_font, "Blues Win", new Vector2(GameSession.Instance.Viewport.Width, GameSession.Instance.Viewport.Height) / 2, Color.White, 0f, _font.MeasureString("Blues Win") / 2, 1f, SpriteEffects.None, 1);
-            }
+            //if (GameSession.Instance.Team1Win && GameSession.Instance.Team2Win) sb.DrawString(_font, "Nobody wins", new Vector2(GameSession.Instance.Viewport.Width, GameSession.Instance.Viewport.Height) / 2, Color.White, 0f, _font.MeasureString("Nobody wins") / 2, 1f, SpriteEffects.None, 1);
+            //else
+            //{
+            //    if (GameSession.Instance.Team1Win) sb.DrawString(_font, "Reds Win", new Vector2(GameSession.Instance.Viewport.Width, GameSession.Instance.Viewport.Height) / 2, Color.White, 0f, _font.MeasureString("Reds Win") / 2, 1f, SpriteEffects.None, 1);
+            //    if (GameSession.Instance.Team2Win) sb.DrawString(_font, "Blues Win", new Vector2(GameSession.Instance.Viewport.Width, GameSession.Instance.Viewport.Height) / 2, Color.White, 0f, _font.MeasureString("Blues Win") / 2, 1f, SpriteEffects.None, 1);
+            //}
 
             sb.End();
         }

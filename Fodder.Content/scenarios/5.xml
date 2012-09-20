@@ -67,6 +67,10 @@
   <T2SpawnRate>5000</T2SpawnRate>
   <MapName>campaign5</MapName>
   <ScenarioName>Two Podiums</ScenarioName>
+    <BronzeScore>0</BronzeScore>
+  <SilverScore>40</SilverScore>
+  <GoldScore>80</GoldScore>
+  <CampaignMissionNum>5</CampaignMissionNum>
 </Scenario>]]>
   </Asset>
 </XnaContent>

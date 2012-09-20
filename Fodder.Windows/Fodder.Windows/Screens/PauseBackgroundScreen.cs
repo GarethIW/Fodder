@@ -105,7 +105,7 @@ namespace Fodder.Windows.GameState
                              Color.White * TransitionAlpha * 0.5f);
 
             spriteBatch.Draw(texLogo, new Vector2(viewport.Width/2, viewport.Height/4), null,
-                             Color.White * TransitionAlpha, 0f, new Vector2(texLogo.Width/2, texLogo.Height/2), 1f + (TransitionPosition * 10f), SpriteEffects.None, 1);
+                             Color.White * TransitionAlpha, 0f, new Vector2(texLogo.Width/2, texLogo.Height/2), 1f, SpriteEffects.None, 1);
 
             spriteBatch.End();
         }

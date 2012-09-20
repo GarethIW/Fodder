@@ -67,6 +67,10 @@
   <T2SpawnRate>8000</T2SpawnRate>
   <MapName>campaign2</MapName>
   <ScenarioName>O'er The Hills</ScenarioName>
+    <BronzeScore>0</BronzeScore>
+  <SilverScore>40</SilverScore>
+  <GoldScore>80</GoldScore>
+  <CampaignMissionNum>2</CampaignMissionNum>
 </Scenario>]]>
   </Asset>
 </XnaContent>

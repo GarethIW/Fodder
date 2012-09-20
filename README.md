@@ -13,14 +13,17 @@ Requirements
 
 The List!
 ---------
-- Solve dude selection on mobile when zoomed out
+- Solve dude selection on mobile when zoomed out (partially solved, needs more testing and tweaking)
 - Pre-battle intro (zoom/pan from fully zoomed out to full/half zoom on spawn point depending on map size)
 - Campaign mode
-  - Campaign Scenario select screen (Scenario = one "level"/map)
-    - Needs async content loading for map preview and Scenario deserialization
-    - Launch into CampaignGameplayScreen
-    - Accept ScenarioResult back from CampaignGameplayScreen (including stats on the game... time, deaths, etc)
-    - Scenario needs a performance rating (ie. out of three stars)                                                                                      
+  - Display star results on mission select screen
+  - Saving campaign progress and results
+  - Zoom out map when ResultsPopupScreen displays
+  - Fix tap to close on ResultsPopupScreen
+- UX (Controls)
+  - Phone pinch should produce a ScaleFactor result to pass to Map.DoZoom                                                                                - Phone drag should produce a Delta result to pass to Map.DoScroll
+  - Scrolling needs to work in X and Y (currently not supported in Map class)
+  - PC/Mouse controls should also support click+drag to scroll (as well as WASD)     
 - Tutorials (ugh)
 - Quick play mode (can set AI difficulty, map etc.)
 - Get some graphics done!

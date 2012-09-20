@@ -36,6 +36,8 @@ namespace Fodder.Windows.GameState
         GameSession gameSession;
         Scenario gameScenario;
 
+        bool resultReached;
+
         #endregion
 
         #region Initialization
@@ -96,9 +98,26 @@ namespace Fodder.Windows.GameState
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-            if (IsActive)
+            bool found = false;
+
+            foreach (GameScreen screen in ScreenManager.GetScreens())
+            {
+                if (screen.GetType() == typeof(PauseBackgroundScreen))
+                    found = true;
+            }
+            if (!found)
             {
                 gameSession.Update(gameTime);
+
+                if (gameSession.Team1Win || gameSession.Team2Win)
+                {
+                    if (!resultReached)
+                    {
+                        resultReached = true;
+                        ScenarioResult result = new ScenarioResult(gameSession, gameScenario);
+                        ScreenManager.AddScreen(new ResultPopupScreen(result, gameScenario), null);
+                    }
+                }
             }
         }
 

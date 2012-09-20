@@ -164,14 +164,14 @@ namespace Fodder.Core
 
                 if (owner.Team == d.Team) continue;
 
-                if (owner.Position.X > d.Position.X && owner.PathDirection == 1) continue;
-                if (owner.Position.X < d.Position.X && owner.PathDirection == -1) continue;
+                if (owner.Position.X > d.Position.X-5 && owner.PathDirection == 1) continue;
+                if (owner.Position.X < d.Position.X+5 && owner.PathDirection == -1) continue;
 
                 float distance = (owner.Position - d.Position).Length();
 
                 if (distance > range) continue;
 
-                if (checkLOS)
+                if (checkLOS && distance>20)
                 {
                     Vector2 testVect = owner.WeaponPosition;
                     float amount = 0f;

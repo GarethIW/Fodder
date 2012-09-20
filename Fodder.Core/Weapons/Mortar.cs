@@ -24,6 +24,7 @@ namespace Fodder.Core.Weapons
             FeetPlanted = true;
 
             _targetAttackTime = 3000;
+            _targetAttackTime = 3000;
             _isPlantingWeapon = true;
             _needsLOS = false;
 

@@ -75,6 +75,7 @@
     <Compile Include="Fodder.cs" />
     <Compile Include="Screens\BackgroundScreen.cs" />
     <Compile Include="Screens\CampaignScreen.cs" />
+    <Compile Include="Screens\ResultPopupScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />

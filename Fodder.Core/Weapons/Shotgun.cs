@@ -46,7 +46,7 @@ namespace Fodder.Core.Weapons
 
             for(int i=0;i<5;i++)
             {
-                Vector2 velocity = (targetDude.WeaponPosition - Owner.WeaponPosition);
+                Vector2 velocity = ((targetDude.WeaponPosition - new Vector2(0, 10f)) - Owner.WeaponPosition);
                 velocity += new Vector2(0, ((float)(ProjectileController.Rand.NextDouble() * 40))-20f);
                 velocity.Normalize();
                 GameSession.Instance.ProjectileController.Add(Owner.WeaponPosition,

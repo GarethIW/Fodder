@@ -67,6 +67,10 @@
   <T2SpawnRate>10000</T2SpawnRate>
   <MapName>campaign1</MapName>
   <ScenarioName>Onward, Virgin Soldiers</ScenarioName>
+    <BronzeScore>0</BronzeScore>
+  <SilverScore>40</SilverScore>
+  <GoldScore>80</GoldScore>
+  <CampaignMissionNum>1</CampaignMissionNum>
 </Scenario>]]>
   </Asset>
 </XnaContent>

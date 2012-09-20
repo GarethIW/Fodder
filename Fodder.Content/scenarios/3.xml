@@ -67,6 +67,10 @@
   <T2SpawnRate>7000</T2SpawnRate>
   <MapName>campaign3</MapName>
   <ScenarioName>Burning Steppes</ScenarioName>
+    <BronzeScore>0</BronzeScore>
+  <SilverScore>40</SilverScore>
+  <GoldScore>80</GoldScore>
+  <CampaignMissionNum>3</CampaignMissionNum>
 </Scenario>]]>
   </Asset>
 </XnaContent>

@@ -67,6 +67,10 @@
   <T2SpawnRate>5000</T2SpawnRate>
   <MapName>campaign6</MapName>
   <ScenarioName>It Rolls Downhill</ScenarioName>
+  <BronzeScore>0</BronzeScore>
+  <SilverScore>40</SilverScore>
+  <GoldScore>80</GoldScore>
+  <CampaignMissionNum>6</CampaignMissionNum>
 </Scenario>]]>
   </Asset>
 </XnaContent>

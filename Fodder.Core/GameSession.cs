@@ -13,27 +13,7 @@ using Fodder.Core.UX;
 
 namespace Fodder.Core
 {
-    public class Scenario
-    {
-        public List<Function> AvailableFunctions;
-        public int AIReactionTime, T1Reinforcements, T2Reinforcements;
-        public double T1SpawnRate, T2SpawnRate;
-        public string MapName, ScenarioName;
-
-        public Scenario() { }
-
-        public Scenario(string name, string mapname, List<Function> funcs, int aireactiontime, int t1reinforcements, int t2reinforcements, double t1spawnrate, double t2spawnrate)
-        {
-            ScenarioName = name;
-            MapName = mapname;
-            AvailableFunctions = funcs;
-            AIReactionTime = aireactiontime;
-            T1Reinforcements = t1reinforcements;
-            T2Reinforcements = t2reinforcements;
-            T1SpawnRate = t1spawnrate;
-            T2SpawnRate = t2spawnrate;
-        }
-    }
+    
 
     public class Function
     {
@@ -88,8 +68,8 @@ namespace Fodder.Core
         internal int Team1SoulCount;
         internal int Team2SoulCount;
 
-        internal bool Team1Win;
-        internal bool Team2Win;
+        public bool Team1Win;
+        public bool Team2Win;
 
         internal Viewport Viewport;
 

@@ -54,7 +54,7 @@ namespace Fodder.Windows.GameState
         float arrowLeftAlpha = 0.5f;
         float arrowRightAlpha = 0.5f;
 
-        const int MAX_SCENARIOS = 7;
+        const int MAX_SCENARIOS = 8;
 
         #endregion
 
@@ -64,7 +64,7 @@ namespace Fodder.Windows.GameState
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CampaignScreen(int scenarioNum)
+        public CampaignScreen(int scenarioNum, ScenarioResult result)
         {
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
@@ -73,6 +73,8 @@ namespace Fodder.Windows.GameState
 
             bgw.DoWork += new DoWorkEventHandler(bgw_DoWork);
             bgw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgw_RunWorkerCompleted);
+
+            EnabledGestures = GestureType.Tap;
         }
 
 

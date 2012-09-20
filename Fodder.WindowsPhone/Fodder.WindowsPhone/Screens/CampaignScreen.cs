@@ -54,7 +54,7 @@ namespace Fodder.Phone.GameState
         float arrowLeftAlpha = 0.5f;
         float arrowRightAlpha = 0.5f;
 
-        const int MAX_SCENARIOS = 7;
+        const int MAX_SCENARIOS = 8;
 
         #endregion
 
@@ -64,17 +64,17 @@ namespace Fodder.Phone.GameState
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CampaignScreen(int scenarioNum)
+        public CampaignScreen(int scenarioNum, ScenarioResult result)
         {
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
             scenarioNumber = scenarioNum;
 
-            EnabledGestures = GestureType.Tap;
-
             bgw.DoWork += new DoWorkEventHandler(bgw_DoWork);
             bgw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgw_RunWorkerCompleted);
+
+            EnabledGestures = GestureType.Tap;
         }
 
 
@@ -86,7 +86,7 @@ namespace Fodder.Phone.GameState
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Fodder.Content");
 
-            
+
 
             font = content.Load<SpriteFont>("font");
             texBG = content.Load<Texture2D>("campaign");
@@ -124,7 +124,7 @@ namespace Fodder.Phone.GameState
                 if (scenarioAlpha < 1f) scenarioAlpha += 0.1f;
             }
 
-            if(scenarioNumber>1)
+            if (scenarioNumber > 1)
                 arrowLeftAlpha += 0.1f;
             else
                 arrowLeftAlpha -= 0.1f;
@@ -139,7 +139,7 @@ namespace Fodder.Phone.GameState
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-            
+
         }
 
 
@@ -154,7 +154,7 @@ namespace Fodder.Phone.GameState
 
             PlayerIndex pi;
 
-            Rectangle leftRect = new Rectangle((ScreenManager.GraphicsDevice.Viewport.Width/2) - 371, (ScreenManager.GraphicsDevice.Viewport.Height/2) - (texBG.Height/2),40,texBG.Height);
+            Rectangle leftRect = new Rectangle((ScreenManager.GraphicsDevice.Viewport.Width / 2) - 371, (ScreenManager.GraphicsDevice.Viewport.Height / 2) - (texBG.Height / 2), 40, texBG.Height);
             Rectangle rightRect = new Rectangle((ScreenManager.GraphicsDevice.Viewport.Width / 2) + 331, (ScreenManager.GraphicsDevice.Viewport.Height / 2) - (texBG.Height / 2), 40, texBG.Height);
             leftRect.Inflate(20, 20);
             rightRect.Inflate(20, 20);
@@ -169,17 +169,17 @@ namespace Fodder.Phone.GameState
                     {
                         Point tapLocation = new Point((int)gesture.Position.X, (int)gesture.Position.Y);
 
-                        if (leftRect.Contains(tapLocation) && scenarioNumber>1)
+                        if (leftRect.Contains(tapLocation) && scenarioNumber > 1)
                         {
                             scenarioNumber--;
                             LoadScenarioAsync();
                         }
-                        if (rightRect.Contains(tapLocation)&& scenarioNumber<MAX_SCENARIOS)
+                        if (rightRect.Contains(tapLocation) && scenarioNumber < MAX_SCENARIOS)
                         {
                             scenarioNumber++;
                             LoadScenarioAsync();
                         }
-                        if(beginRect.Contains(tapLocation))
+                        if (beginRect.Contains(tapLocation))
                             LaunchScenario();
 
                     }
@@ -201,7 +201,7 @@ namespace Fodder.Phone.GameState
                             scenarioNumber++;
                             LoadScenarioAsync();
                         }
-                        if(beginRect.Contains(mouseLocation))
+                        if (beginRect.Contains(mouseLocation))
                             LaunchScenario();
                     }
                 }
@@ -223,7 +223,7 @@ namespace Fodder.Phone.GameState
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
             spriteBatch.Begin();
-            spriteBatch.Draw(texBG, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) -new Vector2(0,28), new Rectangle(50, 0, 642, texBG.Height), Color.White * TransitionAlpha, 0f, new Vector2(642/2,texBG.Height/2),1f, SpriteEffects.None,1);
+            spriteBatch.Draw(texBG, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) - new Vector2(0, 28), new Rectangle(50, 0, 642, texBG.Height), Color.White * TransitionAlpha, 0f, new Vector2(642 / 2, texBG.Height / 2), 1f, SpriteEffects.None, 1);
             spriteBatch.Draw(texBG, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) - new Vector2(371, 28), new Rectangle(0, 0, 40, texBG.Height), Color.White * TransitionAlpha * arrowLeftAlpha, 0f, new Vector2(0, texBG.Height / 2), 1f, SpriteEffects.None, 1);
             spriteBatch.Draw(texBG, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) + new Vector2(331, -28), new Rectangle(0, 0, 40, texBG.Height), Color.White * TransitionAlpha * arrowRightAlpha, 0f, new Vector2(0, texBG.Height / 2), 1f, SpriteEffects.FlipHorizontally, 1);
             spriteBatch.End();
@@ -234,12 +234,12 @@ namespace Fodder.Phone.GameState
 
 
                 spriteBatch.DrawString(font, "Mission " + scenarioNumber + ": " + gameScenario.ScenarioName, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width / 2, (spriteBatch.GraphicsDevice.Viewport.Height / 2) - 200), Color.White * scenarioAlpha * TransitionAlpha, 0f, font.MeasureString("Mission " + scenarioNumber + ": " + gameScenario.ScenarioName) / 2, 1f, SpriteEffects.None, 1);
-                spriteBatch.Draw(texPreview, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2, null, Color.White * scenarioAlpha * TransitionAlpha, 0f, new Vector2(texPreview.Width,texPreview.Height)/2, 1f, SpriteEffects.None,1);
+                spriteBatch.Draw(texPreview, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2, null, Color.White * scenarioAlpha * TransitionAlpha, 0f, new Vector2(texPreview.Width, texPreview.Height) / 2, 1f, SpriteEffects.None, 1);
 
                 spriteBatch.End();
             }
 
-            
+
 
         }
 
@@ -248,7 +248,7 @@ namespace Fodder.Phone.GameState
             scenarioAlpha = 0f;
             loading = true;
 
-            
+
             bgw.RunWorkerAsync();
         }
 

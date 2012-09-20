@@ -67,6 +67,10 @@
   <T2SpawnRate>4000</T2SpawnRate>
   <MapName>campaign7</MapName>
   <ScenarioName>Got Soul?</ScenarioName>
+  <BronzeScore>0</BronzeScore>
+  <SilverScore>40</SilverScore>
+  <GoldScore>80</GoldScore>
+  <CampaignMissionNum>7</CampaignMissionNum>
 </Scenario>]]>
   </Asset>
 </XnaContent>
