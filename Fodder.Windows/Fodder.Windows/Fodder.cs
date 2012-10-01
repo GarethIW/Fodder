@@ -9,7 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Fodder.Core;
-using Fodder.Windows.UX;
+using Fodder.GameState;
+using Fodder.Windows.GameState;
 
 namespace Fodder.Windows
 {
@@ -21,7 +22,8 @@ namespace Fodder.Windows
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        GameSession gameSession;
+        //GameSession gameSession;
+        ScreenManager screenManager; 
 
         public Fodder()
         {
@@ -30,8 +32,17 @@ namespace Fodder.Windows
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+            //graphics.IsFullScreen = true;
+            
 
             IsMouseVisible = true;
+
+            screenManager = new ScreenManager(this, false);
+            Components.Add(screenManager);
+
+            // Activate the first screens.
+            screenManager.AddScreen(new BackgroundScreen(), null);
+            screenManager.AddScreen(new MainMenuScreen(), null);
         }
 
         /// <summary>
@@ -42,19 +53,19 @@ namespace Fodder.Windows
         /// </summary>
         protected override void Initialize()
         {
-            List<Function> funcs = new List<Function>();
-            funcs.Add(new Function("boost",1000,true));
-            funcs.Add(new Function("shield", 10000, true));
-            funcs.Add(new Function("pistol", 4000, true));
-            funcs.Add(new Function("shotgun", 6000, true));
-            funcs.Add(new Function("sniper", 30000, true));
-            funcs.Add(new Function("machinegun", 30000, true));
-            funcs.Add(new Function("mortar", 30000, true));
+            //List<Function> funcs = new List<Function>();
+            //funcs.Add(new Function("boost",1000,true));
+            //funcs.Add(new Function("shield", 10000, true));
+            //funcs.Add(new Function("pistol", 4000, true));
+            //funcs.Add(new Function("shotgun", 6000, true));
+            //funcs.Add(new Function("sniper", 30000, true));
+            //funcs.Add(new Function("machinegun", 30000, true));
+            //funcs.Add(new Function("mortar", 30000, true));
 
 
-            var playerControls = new WindowsPlayerControls(new MouseObserver(), new KeyboardObserver());
+            //var playerControls = new WindowsPlayerControls(new MouseObserver(), new KeyboardObserver());
 
-            gameSession = new GameSession(playerControls, GameClientType.Human, GameClientType.AI, 2000, 2000, 100, 100, funcs, "1", GraphicsDevice.Viewport);
+            //gameSession = new GameSession(playerControls, GameClientType.Human, GameClientType.AI, 2000, 2000, 100, 100, funcs, "1", GraphicsDevice.Viewport);
 
             base.Initialize();
         }
@@ -70,7 +81,7 @@ namespace Fodder.Windows
 
             AudioController.LoadContent(Content);
 
-            gameSession.LoadContent(Content);
+            //gameSession.LoadContent(Content);
 
 
             // TODO: use this.Content to load your game content here
@@ -96,7 +107,7 @@ namespace Fodder.Windows
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            gameSession.Update(gameTime);
+            //gameSession.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -107,9 +118,9 @@ namespace Fodder.Windows
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            gameSession.Draw(gameTime, spriteBatch);
+            //gameSession.Draw(gameTime, spriteBatch);
 
             base.Draw(gameTime);
         }

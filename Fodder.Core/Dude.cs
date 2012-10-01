@@ -45,6 +45,8 @@ namespace Fodder.Core
         internal Vector2 _screenRelativePosition;
         Rectangle _sourceRect;
 
+        double PersonalShield = 0;
+
         public Dude(Texture2D texture)
         {
             texDude = texture;
@@ -67,6 +69,7 @@ namespace Fodder.Core
             BoostTime = 0;
             ShieldTime = 0;
             UIHover = false;
+            PersonalShield = 5000;
 
             _currentMoveTime = 0;
             _targetMoveTime = 10;
@@ -107,6 +110,7 @@ namespace Fodder.Core
                 // Effects
                 if (BoostTime > 0)
                 {
+                    GameSession.Instance.ParticleController.AddBoost(Position);
                     BoostTime -= gameTime.ElapsedGameTime.TotalMilliseconds;
 
                     _targetMoveTime = 0;
@@ -117,7 +121,26 @@ namespace Fodder.Core
                 if (ShieldTime > 0)
                     ShieldTime -= gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                if ((PathDirection == 1 && (int)Position.X >= GameSession.Instance.Map.Width + 40) || (PathDirection == -1 && (int)Position.X <= -40)) Active = false;
+                if (PersonalShield > 0)
+                {
+                    IsShielded = true;
+                    PersonalShield -= gameTime.ElapsedGameTime.TotalMilliseconds;
+                }
+                
+
+                // Flag lowering
+                if(Team==0)
+                    if ((Position - GameSession.Instance.Map.T2Flag.Position).Length() < 40)
+                    {
+                        Weapon.FeetPlanted = true;
+                        GameSession.Instance.Map.T2Flag.NumLowering+=(BoostTime>0?3:1);
+                    }
+                if (Team == 1)
+                    if ((Position - GameSession.Instance.Map.T1Flag.Position).Length() < 40)
+                    {
+                        Weapon.FeetPlanted = true;
+                        GameSession.Instance.Map.T1Flag.NumLowering += (BoostTime > 0 ? 2 : 1);
+                    }
             }
             else
             {
@@ -125,36 +148,45 @@ namespace Fodder.Core
                 {
                     if ((GameSession.Instance.Team1Win && Team == 0) || (GameSession.Instance.Team2Win && Team == 1))
                     {
-                        // DO some kind of win anim
-                        if (!Jumping)
+                        if (Position.X > 0 && Position.X < GameSession.Instance.Map.Width)
                         {
-                            if (GameSession.Instance.DudeController.Rand.Next(100) == 1)
+                            // DO some kind of win anim
+                            if (!Jumping)
                             {
-                                Jumping = true;
-                                JumpSpeed = 2f;
+                                if (GameSession.Instance.DudeController.Rand.Next(100) == 1)
+                                {
+                                    Jumping = true;
+                                    JumpSpeed = 2f;
+                                }
                             }
-                        }
-                        else
-                        {
-                            Position += new Vector2(0, -1f * JumpSpeed);
-                            JumpSpeed -= (GameSession.Instance.Map.Gravity.Y * 2);
-                            if (Position.Y >= GameSession.Instance.Map.TryGetPath((int)Position.X, (int)Position.Y)) Jumping = false;
+                            else
+                            {
+                                Position += new Vector2(0, -1f * JumpSpeed);
+                                JumpSpeed -= (GameSession.Instance.Map.Gravity.Y * 2);
+                                if (Position.Y >= GameSession.Instance.Map.TryGetPath((int)Position.X, (int)Position.Y)) Jumping = false;
+                            }
                         }
                     }
                 }
             }
 
-            _screenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, GameSession.Instance.Viewport.Height - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (Position * GameSession.Instance.Map.Zoom));
+            
 
             WeaponPosition = Position + (Weapon.WeaponOffset * new Vector2(PathDirection, 1));
             HitPosition = Position + new Vector2(0, -(_sourceRect.Width / 2));
 
-            UIRect = new Rectangle((int)(_screenRelativePosition.X - ((_sourceRect.Width / 2) * GameSession.Instance.Map.Zoom)), (int)(_screenRelativePosition.Y - (_sourceRect.Height * GameSession.Instance.Map.Zoom)), (int)(_sourceRect.Width * GameSession.Instance.Map.Zoom), (int)(_sourceRect.Height * GameSession.Instance.Map.Zoom));
+            UIRect = new Rectangle((int)(_screenRelativePosition.X - ((_sourceRect.Width / 2) * GameSession.Instance.Map.Zoom)),
+                                   (int)(_screenRelativePosition.Y - (_sourceRect.Height * GameSession.Instance.Map.Zoom)), 
+                                   (int)(_sourceRect.Width * GameSession.Instance.Map.Zoom), 
+                                   (int)(_sourceRect.Height * GameSession.Instance.Map.Zoom));
+            UIRect.Inflate((int)((1f - GameSession.Instance.Map.Zoom) * 15f), (int)((1f - GameSession.Instance.Map.Zoom) * 15f));
             
         }
 
         public void Draw(SpriteBatch sb)
         {
+            _screenRelativePosition = (new Vector2(-GameSession.Instance.Map.ScrollPos.X, GameSession.Instance.Map.ScrollPos.Y + ((GameSession.Instance.Viewport.Height - GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom))) + (Position * GameSession.Instance.Map.Zoom));
+
             if (!Active) return;
 
             // We'll draw the dude with an origin of bottom middle, bcause his position will be fixed to the path
@@ -168,16 +200,21 @@ namespace Fodder.Core
             Weapon.Draw(sb);
 
             if (UIHover)
+            {
                 sb.Draw(texDude, _screenRelativePosition - new Vector2(0, 60 * GameSession.Instance.Map.Zoom), new Rectangle(80, 0, 20, 20),
                      Color.White,
                      0f,
                      new Vector2(10, 0),
                      GameSession.Instance.Map.Zoom,
                      SpriteEffects.None, 0);
+                UIHover = false;
+            }
         }
 
         public void DrawShield(SpriteBatch sb)
         {
+            _screenRelativePosition = (new Vector2(-GameSession.Instance.Map.ScrollPos.X, GameSession.Instance.Map.ScrollPos.Y + ((GameSession.Instance.Viewport.Height - GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom))) + (Position * GameSession.Instance.Map.Zoom));
+
             if (!Active) return;
 
             if (ShieldTime > 0)
@@ -187,13 +224,21 @@ namespace Fodder.Core
                     new Vector2(300, 300),
                     GameSession.Instance.Map.Zoom,
                     SpriteEffects.None, 0);
+
+            if(PersonalShield>0)
+                sb.Draw(texDude, _screenRelativePosition, new Rectangle(0, 40, 600, 600),
+                    (Team == 0 ? Color.Red : Color.Blue) * 0.2f,
+                    0f,
+                    new Vector2(300, 300),
+                    0.18f * GameSession.Instance.Map.Zoom,
+                    SpriteEffects.None, 0);
         }
 
         public void Hit(int amount)
         {
             if (GameSession.Instance.Team1Win && GameSession.Instance.Team2Win) return;
 
-            AudioController.PlaySFX("hit", 0.2f * GameSession.Instance.Map.Zoom, ((float)GameSession.Instance.DudeController.Rand.NextDouble() * 2f) - 1f, ((2f / GameSession.Instance.Viewport.Width) * _screenRelativePosition.X) - 1f);
+            AudioController.PlaySFX("hit", 0.2f * (GameSession.Instance.Map.Zoom * 1.5f), ((float)GameSession.Instance.DudeController.Rand.NextDouble() * 2f) - 1f, ((2f / GameSession.Instance.Viewport.Width) * _screenRelativePosition.X) - 1f);
 
             Health -= amount / (IsShielded?10:1);
         }
@@ -209,6 +254,9 @@ namespace Fodder.Core
                     break;
                 case "pistol":
                     Weapon = new Pistol(this);
+                    break;
+                case "smg":
+                    Weapon = new SMG(this);
                     break;
                 case "sniper":
                     Weapon = new Sniper(this);

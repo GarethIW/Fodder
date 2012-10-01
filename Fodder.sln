@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fodder.Core", "Fodder.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fodder.WindowsPhone", "Fodder.WindowsPhone\Fodder.WindowsPhone\Fodder.WindowsPhone.csproj", "{27FE5D22-2A73-4A73-968A-A22F0609138D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fodder.GameState", "Fodder.GameState\Fodder.GameState.csproj", "{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fodder.Utils", "Fodder.Utils\Fodder.Utils.csproj", "{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,14 +46,6 @@ Global
 		{A5ACB79A-0071-4507-A27D-BD9C817DCF55}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{A5ACB79A-0071-4507-A27D-BD9C817DCF55}.Release|Windows Phone.ActiveCfg = Debug|Any CPU
 		{A5ACB79A-0071-4507-A27D-BD9C817DCF55}.Release|x86.ActiveCfg = Debug|Any CPU
-		{A4139AD1-EC81-4BDE-8C4D-7FC81D06C55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4139AD1-EC81-4BDE-8C4D-7FC81D06C55A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A4139AD1-EC81-4BDE-8C4D-7FC81D06C55A}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
-		{A4139AD1-EC81-4BDE-8C4D-7FC81D06C55A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A4139AD1-EC81-4BDE-8C4D-7FC81D06C55A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4139AD1-EC81-4BDE-8C4D-7FC81D06C55A}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A4139AD1-EC81-4BDE-8C4D-7FC81D06C55A}.Release|Windows Phone.ActiveCfg = Debug|Any CPU
-		{A4139AD1-EC81-4BDE-8C4D-7FC81D06C55A}.Release|x86.ActiveCfg = Debug|Any CPU
 		{7DFA4F42-2CD3-4CC3-B654-B6A185CF3E8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7DFA4F42-2CD3-4CC3-B654-B6A185CF3E8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DFA4F42-2CD3-4CC3-B654-B6A185CF3E8D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -82,6 +78,30 @@ Global
 		{27FE5D22-2A73-4A73-968A-A22F0609138D}.Release|Windows Phone.Deploy.0 = Release|Windows Phone
 		{27FE5D22-2A73-4A73-968A-A22F0609138D}.Release|x86.ActiveCfg = Release|Windows Phone
 		{27FE5D22-2A73-4A73-968A-A22F0609138D}.Release|x86.Build.0 = Release|Windows Phone
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Release|Windows Phone.ActiveCfg = Release|Any CPU
+		{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}.Release|x86.ActiveCfg = Release|Any CPU
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Debug|Windows Phone.ActiveCfg = Debug|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Debug|x86.ActiveCfg = Debug|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Debug|x86.Build.0 = Debug|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Release|Any CPU.ActiveCfg = Release|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Release|Mixed Platforms.Build.0 = Release|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Release|Windows Phone.ActiveCfg = Release|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Release|x86.ActiveCfg = Release|x86
+		{4AA6BA9D-F363-4B1D-B925-DA6865FF0CFF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

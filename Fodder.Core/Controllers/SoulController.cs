@@ -56,9 +56,11 @@ namespace Fodder.Core
                 else
                 {
                    s.Active = false;
+                   if(s.Team==0) GameSession.Instance.Team1SoulCount++;
+                   if (s.Team == 1) GameSession.Instance.Team2SoulCount++; 
                 }
 
-                s.ScreenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, GameSession.Instance.Viewport.Height - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (s.Position * GameSession.Instance.Map.Zoom));
+                s.ScreenRelativePosition = new Vector2(-GameSession.Instance.Map.ScrollPos.X, GameSession.Instance.Map.ScrollPos.Y + ((GameSession.Instance.Viewport.Height - GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom))) + (s.Position * GameSession.Instance.Map.Zoom);
 
                 if (s.Position.Y < 0)
                 {
@@ -100,6 +102,33 @@ namespace Fodder.Core
                 }
         }
 
+        public void AirStrike(int team)
+        {
+            if (team == 0)
+            {
+                int y = -800;
+                for (int x = 0; x < GameSession.Instance.Map.Width - (GameSession.Instance.Map.Width/3); x += 200)
+                {
+                    GameSession.Instance.ProjectileController.Add(new Vector2(x, y), new Vector2(0f, 10f), 1.5f, true, true, 300, 0);
+                    y -=200;
+                }
+            }
+            if (team == 1)
+            {
+                int y = -800;
+                for (int x = GameSession.Instance.Map.Width; x > (GameSession.Instance.Map.Width / 3); x -= 200)
+                {
+                    GameSession.Instance.ProjectileController.Add(new Vector2(x, y), new Vector2(-0f, 10f), 1.5f, true, true, 300, 1);
+                    y -= 200;
+                }
+            }
+        }
+
+        public void EliteSquad(int team)
+        {
+            Vector2 spawnPos = (team == 0 ? new Vector2(-40, GameSession.Instance.Map.Path[0]) : new Vector2(GameSession.Instance.Map.Width + 39, GameSession.Instance.Map.Path[GameSession.Instance.Map.Width - 1]));
+            GameSession.Instance.DudeController.AddEliteSquad(spawnPos, team);
+        }
 
         public void Reset()
         {

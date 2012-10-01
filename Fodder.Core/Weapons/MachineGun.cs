@@ -24,6 +24,7 @@ namespace Fodder.Core.Weapons
             FeetPlanted = true;
 
             _targetAttackTime = 50;
+            _targetAttackTime = 50;
             _isPlantingWeapon = true;
 
         }
@@ -51,7 +52,7 @@ namespace Fodder.Core.Weapons
                                      0.75f, false, false, 35, Owner.Team);
             CurrentAmmo--;
 
-            AudioController.PlaySFX("machinegun", 0.5f * GameSession.Instance.Map.Zoom, ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 2f) + 0.4f, ((2f / GameSession.Instance.Viewport.Width) * Owner._screenRelativePosition.X) - 1f);
+            AudioController.PlaySFX("machinegun", 0.5f * (GameSession.Instance.Map.Zoom*1.5f), ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 2f) + 0.4f, ((2f / GameSession.Instance.Viewport.Width) * Owner._screenRelativePosition.X) - 1f);
 
             base.Attack(targetDude);
         }

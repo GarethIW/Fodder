@@ -46,7 +46,7 @@ namespace Fodder.Core.Weapons
 
             for(int i=0;i<5;i++)
             {
-                Vector2 velocity = (targetDude.WeaponPosition - Owner.WeaponPosition);
+                Vector2 velocity = ((targetDude.WeaponPosition - new Vector2(0, 10f)) - Owner.WeaponPosition);
                 velocity += new Vector2(0, ((float)(ProjectileController.Rand.NextDouble() * 40))-20f);
                 velocity.Normalize();
                 GameSession.Instance.ProjectileController.Add(Owner.WeaponPosition,
@@ -56,7 +56,7 @@ namespace Fodder.Core.Weapons
 
             CurrentAmmo--;
 
-            AudioController.PlaySFX("shotgun", 0.75f * GameSession.Instance.Map.Zoom, ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 2f) + 0.2f, ((2f / GameSession.Instance.Viewport.Width) * Owner._screenRelativePosition.X) - 1f);
+            AudioController.PlaySFX("shotgun", 0.6f * (GameSession.Instance.Map.Zoom * 1.5f), ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 2f) + 0.2f, ((2f / GameSession.Instance.Viewport.Width) * Owner._screenRelativePosition.X) - 1f);
 
             base.Attack(targetDude);
         }

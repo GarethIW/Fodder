@@ -34,6 +34,7 @@ namespace Fodder.Core
 
             effects.Add("explode", content.Load<SoundEffect>("audio/sfx/explode"));
             effects.Add("hit", content.Load<SoundEffect>("audio/sfx/hit"));
+            effects.Add("smg", content.Load<SoundEffect>("audio/sfx/smg"));
             effects.Add("machinegun", content.Load<SoundEffect>("audio/sfx/machinegun"));
             effects.Add("mortar", content.Load<SoundEffect>("audio/sfx/mortar"));
             effects.Add("pistol", content.Load<SoundEffect>("audio/sfx/pistol"));
@@ -97,7 +98,8 @@ namespace Fodder.Core
         {
            // if (OptionsMenuScreen.sfx)
             if (pan < -1f || pan > 1f) return;
-                effects[name].Play(volume * sfxvolume, pitch, pan);
+            volume = MathHelper.Clamp(volume, 0f, 1f);
+            effects[name].Play(volume * sfxvolume, pitch, pan);
         }
         public static void PlaySFX(string name, float minpitch, float maxpitch)
         {

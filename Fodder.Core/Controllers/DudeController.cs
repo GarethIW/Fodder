@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Fodder.Core.UX;
+using Fodder.GameState;
 
 namespace Fodder.Core
 {
@@ -54,17 +54,14 @@ namespace Fodder.Core
                     d.Active = false;
                     GameSession.Instance.SoulController.Add(d.Position, d.Team);
                     GameSession.Instance.ParticleController.AddGibs(d.HitPosition, d.Team);
-                    if (d.Team == 0) GameSession.Instance.Team1DeadCount++;
-                    if (d.Team == 1) GameSession.Instance.Team2DeadCount++;
+                    if (d.Team == 0) { GameSession.Instance.Team1DeadCount++; }
+                    if (d.Team == 1) { GameSession.Instance.Team2DeadCount++; }
                 }
             }
         }
 
-        public void HandleInput(IHumanPlayerControls playerControls, int team)
+        public void HandleInput(InputState input, int team)
         {
-            if (playerControls == null)
-                throw new ArgumentException("Cannot handle little dude input without PlayerControls");
-
             bool found = false;
 
             foreach (Dude d in Dudes)
@@ -73,20 +70,21 @@ namespace Fodder.Core
 
                 if (!found)
                 {
-                    // This assumes that player is controlling team 0 (left)
-                    if (d.UIRect.Contains(playerControls.X, playerControls.Y) && d.Team == team)
+                    if (d.Team == team)
                     {
-                        d.UIHover = true;
-                        found = true;
+                        if (d.UIRect.Contains(new Point(input.CurrentMouseState.X, input.CurrentMouseState.Y)))
+                        {
+                            d.UIHover = true;
+                            found = true;
+                        }
 
-                        if (playerControls.Select)
+                        if (input.TapPosition.HasValue && d.UIRect.Contains(new Point((int)input.TapPosition.Value.X, (int)input.TapPosition.Value.Y)))
                         {
                             GameSession.Instance.ButtonController.DudeClicked(d);
+                            found = true;
                         }
                     }
-                    else d.UIHover = false;
                 }
-                else d.UIHover = false;
             }
         }
 
@@ -124,6 +122,36 @@ namespace Fodder.Core
                 }
         }
 
+        public void AddEliteSquad(Vector2 spawnPos, int team)
+        {
+            int count = 0;
+            foreach (Dude d in Dudes)
+                if (!d.Active)
+                {
+                    d.Spawn(spawnPos, team);
+                    d.BoostTime = 20000;
+                    if (count == 2) d.ShieldTime = 20000;
+                    switch (Rand.Next(3))
+                    {
+                        case 0:
+                            d.GiveWeapon("pistol");
+                            d.Weapon.CurrentAmmo = 20;
+                            break;
+                        case 1:
+                            d.GiveWeapon("shotgun");
+                            d.Weapon.CurrentAmmo = 16;
+                            break;
+                        case 2:
+                            d.GiveWeapon("smg");
+                            d.Weapon.CurrentAmmo = 60;
+                            break;
+                    }
+                    count++;
+                    spawnPos += new Vector2((team == 0 ? -50 : 50), 0);
+                    if (count == 5) break;
+                }
+        }
+
         public Dude EnemyInRange(Dude owner, float range, bool checkLOS)
         {
             Dude returnDude = null;
@@ -143,7 +171,7 @@ namespace Fodder.Core
 
                 if (distance > range) continue;
 
-                if (checkLOS)
+                if (checkLOS && distance>20)
                 {
                     Vector2 testVect = owner.WeaponPosition;
                     float amount = 0f;

@@ -65,15 +65,24 @@
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Fodder.cs" />
-    <Compile Include="UX\KeyboardObserver.cs" />
-    <Compile Include="UX\MouseObserver.cs" />
-    <Compile Include="UX\WindowsPlayerControls.cs" />
+    <Compile Include="Screens\BackgroundScreen.cs" />
+    <Compile Include="Screens\CampaignScreen.cs" />
+    <Compile Include="Screens\ResultPopupScreen.cs" />
+    <Compile Include="Screens\GameplayScreen.cs" />
+    <Compile Include="Screens\LoadingScreen.cs" />
+    <Compile Include="Screens\MainMenuScreen.cs" />
+    <Compile Include="Screens\MessageBoxScreen.cs" />
+    <Compile Include="Screens\OptionsMenuScreen.cs" />
+    <Compile Include="Screens\PauseBackgroundScreen.cs" />
+    <Compile Include="Screens\PauseMenuScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -117,6 +126,10 @@
     <ProjectReference Include="..\..\Fodder.Core\Fodder.Core.csproj">
       <Project>{7DFA4F42-2CD3-4CC3-B654-B6A185CF3E8D}</Project>
       <Name>Fodder.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Fodder.GameState\Fodder.GameState.csproj">
+      <Project>{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}</Project>
+      <Name>Fodder.GameState</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

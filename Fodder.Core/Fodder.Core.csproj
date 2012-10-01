@@ -39,17 +39,17 @@
     <Compile Include="Controllers\ParticleController.cs" />
     <Compile Include="Controllers\ProjectileController.cs" />
     <Compile Include="Controllers\SoulController.cs" />
+    <Compile Include="Projectile.cs" />
     <Compile Include="Dude.cs" />
     <Compile Include="GameSession.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="Projectile.cs" />
+    <Compile Include="Flag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scenario.cs" />
     <Compile Include="UI\Button.cs" />
     <Compile Include="UI\ButtonController.cs" />
     <Compile Include="UI\HUD.cs" />
-    <Compile Include="UX\IHumanPlayerControls.cs" />
-    <Compile Include="UX\ScrollDirection.cs" />
-    <Compile Include="UX\ZoomDirection.cs" />
+    <Compile Include="Weapons\SMG.cs" />
     <Compile Include="Weapons\MachineGun.cs" />
     <Compile Include="Weapons\Mortar.cs" />
     <Compile Include="Weapons\Pistol.cs" />
@@ -68,7 +68,16 @@
     <Reference Include="Microsoft.Xna.Framework.Graphics">
       <HintPath>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Xbox360\Microsoft.Xna.Framework.Graphics.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Input.Touch">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Xbox360\Microsoft.Xna.Framework.Input.Touch.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fodder.GameState\Fodder.GameState.csproj">
+      <Project>{D34C3D8C-F271-43C5-9CA2-71C42F6BC9C6}</Project>
+      <Name>Fodder.GameState</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -52,7 +52,7 @@ namespace Fodder.Core.Weapons
                                      0.5f, false, false, 100, Owner.Team);
             CurrentAmmo--;
 
-            AudioController.PlaySFX("sniper", 0.8f * GameSession.Instance.Map.Zoom, ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 1f) - 0.5f, ((2f / GameSession.Instance.Viewport.Width) * Owner._screenRelativePosition.X) - 1f);
+            AudioController.PlaySFX("sniper", 0.8f * (GameSession.Instance.Map.Zoom * 1.5f), ((float)GameSession.Instance.DudeController.Rand.NextDouble() / 1f) - 0.5f, ((2f / GameSession.Instance.Viewport.Width) * Owner._screenRelativePosition.X) - 1f);
 
             base.Attack(targetDude);
         }
