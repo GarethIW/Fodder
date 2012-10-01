@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Fodder.Core.UX;
+using Fodder.GameState;
 
 namespace Fodder.Core
 {
@@ -60,11 +60,8 @@ namespace Fodder.Core
             }
         }
 
-        public void HandleInput(IHumanPlayerControls playerControls, int team)
+        public void HandleInput(InputState input, int team)
         {
-            if (playerControls == null)
-                throw new ArgumentException("Cannot handle little dude input without PlayerControls");
-
             bool found = false;
 
             foreach (Dude d in Dudes)
@@ -73,15 +70,18 @@ namespace Fodder.Core
 
                 if (!found)
                 {
-                    // This assumes that player is controlling team 0 (left)
-                    if (d.UIRect.Contains(playerControls.X, playerControls.Y) && d.Team == team)
+                    if (d.Team == team)
                     {
-                        d.UIHover = true;
-                        found = true;
+                        if (d.UIRect.Contains(new Point(input.CurrentMouseState.X, input.CurrentMouseState.Y)))
+                        {
+                            d.UIHover = true;
+                            found = true;
+                        }
 
-                        if (playerControls.Select)
+                        if (input.TapPosition.HasValue && d.UIRect.Contains(new Point((int)input.TapPosition.Value.X, (int)input.TapPosition.Value.Y)))
                         {
                             GameSession.Instance.ButtonController.DudeClicked(d);
+                            found = true;
                         }
                     }
                 }
@@ -164,8 +164,8 @@ namespace Fodder.Core
 
                 if (owner.Team == d.Team) continue;
 
-                if (owner.Position.X > d.Position.X-5 && owner.PathDirection == 1) continue;
-                if (owner.Position.X < d.Position.X+5 && owner.PathDirection == -1) continue;
+                if (owner.Position.X > d.Position.X && owner.PathDirection == 1) continue;
+                if (owner.Position.X < d.Position.X && owner.PathDirection == -1) continue;
 
                 float distance = (owner.Position - d.Position).Length();
 

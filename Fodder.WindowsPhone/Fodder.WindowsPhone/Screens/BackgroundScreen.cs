@@ -15,7 +15,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Fodder.Core;
 using Fodder.GameState;
 using System.Collections.Generic;
-using Fodder.WindowsPhone.UX;
 #endregion
 
 namespace Fodder.Phone.GameState
@@ -80,11 +79,9 @@ namespace Fodder.Phone.GameState
             funcs.Add(new Function("meteors", 20, true));
             funcs.Add(new Function("elite", 20, true));
 
-            var playerControls = new WindowsPhonePlayerControls(new TouchObserver(), new ButtonObserver());
-
             Scenario scenario = new Scenario("Attract", "attract", funcs, 3000, 100, 100, 1000, 1000);
 
-            attractSession = new GameSession(playerControls, GameClientType.AI, GameClientType.AI, scenario, ScreenManager.GraphicsDevice.Viewport, true);
+            attractSession = new GameSession(GameClientType.AI, GameClientType.AI, scenario, ScreenManager.GraphicsDevice.Viewport, true);
             attractSession.LoadContent(content);
         }
 

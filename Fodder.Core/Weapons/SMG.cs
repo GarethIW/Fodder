@@ -18,13 +18,13 @@ namespace Fodder.Core.Weapons
         public SMG(Dude owner) : base(owner)
         {
             Range = 400f;
-            StartingAmmo = 30;
-            CurrentAmmo = 30;
+            StartingAmmo = 50;
+            CurrentAmmo = 50;
             WeaponOffset = new Vector2(5, -20);
             FeetPlanted = false;
 
-            _targetAttackTime = 100;
-            _currentAttackTime = 100;
+            _targetAttackTime = 150;
+            _currentAttackTime = 150;
             _isPlantingWeapon = false;
 
         }

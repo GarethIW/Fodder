@@ -65,11 +65,12 @@ namespace Fodder.Core
             if(AffectedByGravity)
                 Velocity += GameSession.Instance.Map.Gravity;
 
-            _screenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, (GameSession.Instance.Viewport.Height- GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (Position * GameSession.Instance.Map.Zoom));
         }
 
         public void Draw(SpriteBatch sb)
         {
+            _screenRelativePosition = (new Vector2(-GameSession.Instance.Map.ScrollPos.X, GameSession.Instance.Map.ScrollPos.Y + ((GameSession.Instance.Viewport.Height - GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom))) + (Position * GameSession.Instance.Map.Zoom));
+
             if (!Active) return;
 
             // We'll draw the dude with an origin of bottom middle, bcause his position will be fixed to the path

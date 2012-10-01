@@ -11,7 +11,6 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using Fodder.Core;
 using Microsoft.Phone.Info;
-using Fodder.WindowsPhone.UX;
 using Fodder.GameState;
 using Fodder.Phone.GameState;
 
@@ -38,6 +37,8 @@ namespace Fodder.WindowsPhone
 
             // Extend battery life under lock.
             InactiveSleepTime = TimeSpan.FromSeconds(1);
+
+            IsMouseVisible = false;
 
             graphics.IsFullScreen = true;
 
@@ -134,20 +135,6 @@ namespace Fodder.WindowsPhone
             //spriteBatch.End();
         }
 
-        float GetScaleFactor(Vector2 position1, Vector2 position2, Vector2 delta1, Vector2 delta2)
-        {
-            Vector2 oldPosition1 = position1 - delta1;
-            Vector2 oldPosition2 = position2 - delta2;
-
-            float distance = Vector2.Distance(position1, position2);
-            float oldDistance = Vector2.Distance(oldPosition1, oldPosition2);
-
-            if (oldDistance == 0 || distance == 0)
-            {
-                return 1.0f;
-            }
-
-            return (distance / oldDistance);
-        }
+        
     }
 }

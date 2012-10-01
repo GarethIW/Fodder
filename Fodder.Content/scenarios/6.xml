@@ -11,7 +11,7 @@
     </Function>
     <Function>
       <Name>shield</Name>
-      <CoolDown>10000</CoolDown>
+      <CoolDown>15000</CoolDown>
       <IsEnabled>true</IsEnabled>
     </Function>
     <Function>

@@ -42,6 +42,17 @@ namespace Fodder.GameState
 
         public readonly List<GestureSample> Gestures = new List<GestureSample>();
 
+        public GestureSample? TapGesture;
+        public GestureSample? PinchGesture;
+        public GestureSample? DragGesture;
+
+        private int mouseHoldCount;
+        public bool MouseDragging;
+        public bool MouseLeftClick;
+        public Vector2 MouseDelta;
+
+        public Vector2? TapPosition;
+
         #endregion
 
         #region Initialization
@@ -99,6 +110,42 @@ namespace Fodder.GameState
             {
                 Gestures.Add(TouchPanel.ReadGesture());
             }
+
+            TapGesture = null;
+            DragGesture = null;
+            PinchGesture = null;
+            foreach (GestureSample gest in Gestures)
+            {
+                if (gest.GestureType == GestureType.Tap)
+                    TapGesture = gest;
+                if (gest.GestureType == GestureType.FreeDrag)
+                    DragGesture = gest;
+                if (gest.GestureType == GestureType.Pinch)
+                    PinchGesture = gest;
+
+            }
+
+            MouseDelta = new Vector2(CurrentMouseState.X - LastMouseState.X, CurrentMouseState.Y - LastMouseState.Y);
+
+            MouseLeftClick = false;
+            MouseDragging = false;
+            if (LastMouseState.LeftButton == ButtonState.Pressed && CurrentMouseState.LeftButton == ButtonState.Pressed)
+            {
+                mouseHoldCount++;
+                if (mouseHoldCount > 0 && MouseDelta.Length() > 5f) MouseDragging = true; 
+                if(mouseHoldCount>30) MouseDragging = true;
+            }
+            else
+            {
+                if (mouseHoldCount > 0 && mouseHoldCount < 30) MouseLeftClick = true;
+                mouseHoldCount = 0;
+            }
+
+            
+
+            TapPosition = null;
+            if (TapGesture.HasValue) TapPosition = TapGesture.Value.Position;
+            if (MouseLeftClick) TapPosition = new Vector2(CurrentMouseState.X, CurrentMouseState.Y);
         }
 
 
@@ -235,6 +282,26 @@ namespace Fodder.GameState
             return IsNewKeyPress(Keys.Escape, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.Back, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.Start, controllingPlayer, out playerIndex);
+        }
+
+        public float GetScaleFactor(GestureSample gest)
+        {
+            return GetScaleFactor(gest.Position, gest.Position2, gest.Delta, gest.Delta2);
+        }
+        public float GetScaleFactor(Vector2 position1, Vector2 position2, Vector2 delta1, Vector2 delta2)
+        {
+            Vector2 oldPosition1 = position1 - delta1;
+            Vector2 oldPosition2 = position2 - delta2;
+
+            float distance = Vector2.Distance(position1, position2);
+            float oldDistance = Vector2.Distance(oldPosition1, oldPosition2);
+
+            if (oldDistance == 0 || distance == 0)
+            {
+                return 1.0f;
+            }
+
+            return (distance / oldDistance);
         }
 
 

@@ -45,6 +45,8 @@ namespace Fodder.Core
         internal Vector2 _screenRelativePosition;
         Rectangle _sourceRect;
 
+        double PersonalShield = 0;
+
         public Dude(Texture2D texture)
         {
             texDude = texture;
@@ -67,6 +69,7 @@ namespace Fodder.Core
             BoostTime = 0;
             ShieldTime = 0;
             UIHover = false;
+            PersonalShield = 5000;
 
             _currentMoveTime = 0;
             _targetMoveTime = 10;
@@ -118,7 +121,26 @@ namespace Fodder.Core
                 if (ShieldTime > 0)
                     ShieldTime -= gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                if ((PathDirection == 1 && (int)Position.X >= GameSession.Instance.Map.Width + 40) || (PathDirection == -1 && (int)Position.X <= -40)) Active = false;
+                if (PersonalShield > 0)
+                {
+                    IsShielded = true;
+                    PersonalShield -= gameTime.ElapsedGameTime.TotalMilliseconds;
+                }
+                
+
+                // Flag lowering
+                if(Team==0)
+                    if ((Position - GameSession.Instance.Map.T2Flag.Position).Length() < 40)
+                    {
+                        Weapon.FeetPlanted = true;
+                        GameSession.Instance.Map.T2Flag.NumLowering+=(BoostTime>0?3:1);
+                    }
+                if (Team == 1)
+                    if ((Position - GameSession.Instance.Map.T1Flag.Position).Length() < 40)
+                    {
+                        Weapon.FeetPlanted = true;
+                        GameSession.Instance.Map.T1Flag.NumLowering += (BoostTime > 0 ? 2 : 1);
+                    }
             }
             else
             {
@@ -148,7 +170,7 @@ namespace Fodder.Core
                 }
             }
 
-            _screenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, (GameSession.Instance.Viewport.Height- GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (Position * GameSession.Instance.Map.Zoom));
+            
 
             WeaponPosition = Position + (Weapon.WeaponOffset * new Vector2(PathDirection, 1));
             HitPosition = Position + new Vector2(0, -(_sourceRect.Width / 2));
@@ -163,6 +185,8 @@ namespace Fodder.Core
 
         public void Draw(SpriteBatch sb)
         {
+            _screenRelativePosition = (new Vector2(-GameSession.Instance.Map.ScrollPos.X, GameSession.Instance.Map.ScrollPos.Y + ((GameSession.Instance.Viewport.Height - GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom))) + (Position * GameSession.Instance.Map.Zoom));
+
             if (!Active) return;
 
             // We'll draw the dude with an origin of bottom middle, bcause his position will be fixed to the path
@@ -189,6 +213,8 @@ namespace Fodder.Core
 
         public void DrawShield(SpriteBatch sb)
         {
+            _screenRelativePosition = (new Vector2(-GameSession.Instance.Map.ScrollPos.X, GameSession.Instance.Map.ScrollPos.Y + ((GameSession.Instance.Viewport.Height - GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom))) + (Position * GameSession.Instance.Map.Zoom));
+
             if (!Active) return;
 
             if (ShieldTime > 0)
@@ -197,6 +223,14 @@ namespace Fodder.Core
                     0f,
                     new Vector2(300, 300),
                     GameSession.Instance.Map.Zoom,
+                    SpriteEffects.None, 0);
+
+            if(PersonalShield>0)
+                sb.Draw(texDude, _screenRelativePosition, new Rectangle(0, 40, 600, 600),
+                    (Team == 0 ? Color.Red : Color.Blue) * 0.2f,
+                    0f,
+                    new Vector2(300, 300),
+                    0.18f * GameSession.Instance.Map.Zoom,
                     SpriteEffects.None, 0);
         }
 

@@ -71,9 +71,7 @@ namespace Fodder.Core
         public void MouseDown()
         {
             _buttonDown = true;
-        }
-        public void MouseUp()
-        {
+
             if (_buttonDown == true && IsEnabled)
             {
                 if (SoulButton == 0)
@@ -89,6 +87,10 @@ namespace Fodder.Core
                 // Button has been clicked
                 _buttonDown = false;
             }
+        }
+        public void MouseUp()
+        {
+            _buttonDown = false;
         }
 
         public void ActivateFunction(Dude d)
@@ -121,7 +123,7 @@ namespace Fodder.Core
                 switch (Function)
                 {
                     case "haste":
-                        GameSession.Instance.ButtonController.HasteTime = 20000;
+                        GameSession.Instance.ButtonController.HasteTime = 30000;
                         break;
                     case "meteors":
                         GameSession.Instance.SoulController.AirStrike(GameSession.Instance.Team1ClientType == GameClientType.Human ? 0 : 1);

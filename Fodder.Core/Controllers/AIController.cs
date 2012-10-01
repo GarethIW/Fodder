@@ -152,7 +152,7 @@ namespace Fodder.Core
                     if (souls >= Actions[8].MaxCooldown)
                     {
                         // use haste
-                        HasteTime = 20000;
+                        HasteTime = 30000;
                         if (team == 0) GameSession.Instance.Team1SoulCount -= (int)Actions[8].MaxCooldown;
                         if (team == 1) GameSession.Instance.Team2SoulCount -= (int)Actions[8].MaxCooldown;
                     }

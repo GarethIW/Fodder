@@ -17,7 +17,7 @@ using Microsoft.Xna.Framework.Input;
 using Fodder.GameState;
 using Fodder.Core;
 using System.Collections.Generic;
-using Fodder.Windows.UX;
+using Microsoft.Xna.Framework.Input.Touch;
 #endregion
 
 namespace Fodder.Windows.GameState
@@ -54,6 +54,8 @@ namespace Fodder.Windows.GameState
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
             IsStubbourn = true;
+
+            EnabledGestures = GestureType.Pinch | GestureType.Tap | GestureType.FreeDrag;
         }
 
 
@@ -65,9 +67,7 @@ namespace Fodder.Windows.GameState
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Fodder.Content");
 
-            var playerControls = new WindowsPlayerControls(new MouseObserver(), new KeyboardObserver());
-
-            gameSession = new GameSession(playerControls, GameClientType.Human, GameClientType.AI, gameScenario, ScreenManager.GraphicsDevice.Viewport, false);
+            gameSession = new GameSession(GameClientType.Human, GameClientType.AI, gameScenario, ScreenManager.GraphicsDevice.Viewport, false);
             gameSession.LoadContent(content);
 
             ScreenManager.Game.ResetElapsedTime();
@@ -137,6 +137,8 @@ namespace Fodder.Windows.GameState
                 ScreenManager.AddScreen(pauseBG, ControllingPlayer);
                 ScreenManager.AddScreen(new PauseMenuScreen(pauseBG), ControllingPlayer);
             }
+
+            gameSession.HandleInput(input);
         }
 
 

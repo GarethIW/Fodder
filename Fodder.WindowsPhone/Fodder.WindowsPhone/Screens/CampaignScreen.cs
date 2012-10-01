@@ -18,10 +18,10 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Fodder.GameState;
 using Fodder.Core;
 using System.Collections.Generic;
-using Fodder.WindowsPhone.UX;
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
+using System.IO.IsolatedStorage;
 #endregion
 
 namespace Fodder.Phone.GameState
@@ -42,10 +42,16 @@ namespace Fodder.Phone.GameState
         Map map;
         Texture2D texPreview;
         Texture2D texBG;
+        Texture2D texStar;
 
         SpriteFont font;
 
         BackgroundWorker bgw = new BackgroundWorker();
+
+        const int MAX_SCENARIOS = 15;
+
+        int furthestScenario = 1;
+        List<int> scenarioScores = new List<int>(MAX_SCENARIOS);
 
         int scenarioNumber = 0;
         float scenarioAlpha = 0f;
@@ -53,8 +59,6 @@ namespace Fodder.Phone.GameState
 
         float arrowLeftAlpha = 0.5f;
         float arrowRightAlpha = 0.5f;
-
-        const int MAX_SCENARIOS = 8;
 
         #endregion
 
@@ -69,12 +73,29 @@ namespace Fodder.Phone.GameState
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
-            scenarioNumber = scenarioNum;
-
             bgw.DoWork += new DoWorkEventHandler(bgw_DoWork);
             bgw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bgw_RunWorkerCompleted);
 
             EnabledGestures = GestureType.Tap;
+
+            for (int i = 0; i < MAX_SCENARIOS; i++) scenarioScores.Add(0);
+
+            LoadProgress();
+            if (scenarioNum == -1) scenarioNumber = furthestScenario; else scenarioNumber = scenarioNum;
+            if (result != null)
+            {
+                if (result.Team1Human && result.Team1Win)
+                {
+                    if (scenarioNum == furthestScenario && scenarioNum < MAX_SCENARIOS) furthestScenario = scenarioNum + 1;
+                    scenarioScores[scenarioNum - 1] = result.Team1ScoreRewarded;
+                }
+                if (result.Team2Human && result.Team2Win)
+                {
+                    if (scenarioNum == furthestScenario && scenarioNum < MAX_SCENARIOS) furthestScenario = scenarioNum + 1;
+                    scenarioScores[scenarioNum - 1] = result.Team2ScoreRewarded;
+                }
+            }
+            SaveProgress();
         }
 
 
@@ -86,10 +107,9 @@ namespace Fodder.Phone.GameState
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Fodder.Content");
 
-
-
             font = content.Load<SpriteFont>("font");
             texBG = content.Load<Texture2D>("campaign");
+            texStar = content.Load<Texture2D>("star");
 
             LoadScenarioAsync();
 
@@ -129,13 +149,13 @@ namespace Fodder.Phone.GameState
             else
                 arrowLeftAlpha -= 0.1f;
 
-            if (scenarioNumber < MAX_SCENARIOS)
+            if (scenarioNumber < furthestScenario)
                 arrowRightAlpha += 0.1f;
             else
                 arrowRightAlpha -= 0.1f;
 
-            arrowLeftAlpha = MathHelper.Clamp(arrowLeftAlpha, 0.5f, 1f);
-            arrowRightAlpha = MathHelper.Clamp(arrowRightAlpha, 0.5f, 1f);
+            arrowLeftAlpha = MathHelper.Clamp(arrowLeftAlpha, 0.1f, 1f);
+            arrowRightAlpha = MathHelper.Clamp(arrowRightAlpha, 0.1f, 1f);
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
@@ -174,7 +194,7 @@ namespace Fodder.Phone.GameState
                             scenarioNumber--;
                             LoadScenarioAsync();
                         }
-                        if (rightRect.Contains(tapLocation) && scenarioNumber < MAX_SCENARIOS)
+                        if (rightRect.Contains(tapLocation) && scenarioNumber < furthestScenario)
                         {
                             scenarioNumber++;
                             LoadScenarioAsync();
@@ -196,7 +216,7 @@ namespace Fodder.Phone.GameState
                             scenarioNumber--;
                             LoadScenarioAsync();
                         }
-                        if (rightRect.Contains(mouseLocation) && scenarioNumber < MAX_SCENARIOS)
+                        if (rightRect.Contains(mouseLocation) && scenarioNumber < furthestScenario)
                         {
                             scenarioNumber++;
                             LoadScenarioAsync();
@@ -226,6 +246,7 @@ namespace Fodder.Phone.GameState
             spriteBatch.Draw(texBG, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) - new Vector2(0, 28), new Rectangle(50, 0, 642, texBG.Height), Color.White * TransitionAlpha, 0f, new Vector2(642 / 2, texBG.Height / 2), 1f, SpriteEffects.None, 1);
             spriteBatch.Draw(texBG, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) - new Vector2(371, 28), new Rectangle(0, 0, 40, texBG.Height), Color.White * TransitionAlpha * arrowLeftAlpha, 0f, new Vector2(0, texBG.Height / 2), 1f, SpriteEffects.None, 1);
             spriteBatch.Draw(texBG, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) + new Vector2(331, -28), new Rectangle(0, 0, 40, texBG.Height), Color.White * TransitionAlpha * arrowRightAlpha, 0f, new Vector2(0, texBG.Height / 2), 1f, SpriteEffects.FlipHorizontally, 1);
+
             spriteBatch.End();
 
             if (!loading)
@@ -235,6 +256,12 @@ namespace Fodder.Phone.GameState
 
                 spriteBatch.DrawString(font, "Mission " + scenarioNumber + ": " + gameScenario.ScenarioName, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width / 2, (spriteBatch.GraphicsDevice.Viewport.Height / 2) - 200), Color.White * scenarioAlpha * TransitionAlpha, 0f, font.MeasureString("Mission " + scenarioNumber + ": " + gameScenario.ScenarioName) / 2, 1f, SpriteEffects.None, 1);
                 spriteBatch.Draw(texPreview, new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2, null, Color.White * scenarioAlpha * TransitionAlpha, 0f, new Vector2(texPreview.Width, texPreview.Height) / 2, 1f, SpriteEffects.None, 1);
+
+                for (int i = 1; i < 4; i++)
+                {
+                    spriteBatch.Draw(texStar, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) + new Vector2(45 + i * 70, 110), null, Color.Black * 0.5f * TransitionAlpha, 0f, new Vector2(texStar.Width, texStar.Height) / 2, 0.8f, SpriteEffects.FlipHorizontally, 1);
+                    if ((scenarioScores[scenarioNumber - 1] >= i)) spriteBatch.Draw(texStar, (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) + new Vector2(45 + i * 70, 110), null, Color.White * TransitionAlpha, 0f, new Vector2(texStar.Width, texStar.Height) / 2, 0.7f, SpriteEffects.FlipHorizontally, 1);
+                }
 
                 spriteBatch.End();
             }
@@ -279,6 +306,44 @@ namespace Fodder.Phone.GameState
         private void LaunchScenario()
         {
             LoadingScreen.Load(ScreenManager, false, null, new GameplayScreen(gameScenario));
+        }
+
+        private void SaveProgress()
+        {
+            try
+            {
+                using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    IsolatedStorageFileStream stream = storage.OpenFile("c", System.IO.FileMode.Create);
+                    StreamWriter sr = new StreamWriter(stream);
+                    sr.WriteLine(furthestScenario.ToString());
+                    foreach (int score in scenarioScores) sr.WriteLine(score.ToString());
+                    sr.Flush();
+                    sr.Close();
+                }
+
+            }
+            catch (Exception ex) { }
+        }
+        private void LoadProgress()
+        {
+            try
+            {
+                using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (storage.FileExists("c"))
+                    {
+                        IsolatedStorageFileStream stream = storage.OpenFile("c", System.IO.FileMode.Open);
+                        StreamReader sr = new StreamReader(stream);
+                        furthestScenario = Convert.ToInt32(sr.ReadLine());
+                        int num = 0;
+                        while (!sr.EndOfStream) { scenarioScores[num] = Convert.ToInt32(sr.ReadLine()); num++; }
+                        sr.Close();
+                    }
+                }
+
+            }
+            catch (Exception ex) { }
         }
 
 

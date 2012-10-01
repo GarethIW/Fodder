@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Fodder.Core.UX;
+using Fodder.GameState;
 
 namespace Fodder.Core
 {
@@ -52,32 +52,25 @@ namespace Fodder.Core
             if (HasteTime > 0) HasteTime -= gameTime.ElapsedGameTime.TotalMilliseconds;
         }
 
-        public void HandleInput(IHumanPlayerControls playerControls)
+        public void HandleInput(InputState input)
         {
-            if (playerControls == null)
-                throw new ArgumentException("Cannot handle input for game buttons without PlayerControls");
-
-            if (playerControls.X == 0 && playerControls.Y == 0)
-                return;
-
             if (GameSession.Instance.Team1Win || GameSession.Instance.Team2Win) return;
             if (GameSession.Instance.Team1ClientType != GameClientType.Human && GameSession.Instance.Team2ClientType != GameClientType.Human) return;
 
             foreach (Button b in Buttons)
             {
-                if(b.UIRect.Contains(playerControls.X, playerControls.Y))
+                if (input.TapPosition.HasValue && b.UIRect.Contains(new Point((int)input.TapPosition.Value.X, (int)input.TapPosition.Value.Y)))
                 {
                     b.MouseOver();
-                    if (playerControls.Select)
+                    if (input.MouseLeftClick)
                     {
                         b.MouseDown();
-                        if (playerControls.IsPhone) b.MouseUp();
                     }
                     else b.MouseUp();
                 }                
                 else b.MouseOut();
 
-                if (playerControls.IsButtonShortcutKeyPressed(b.ShortcutKey) && b.IsEnabled)
+                if (input.CurrentKeyboardStates[0].IsKeyDown(b.ShortcutKey) && b.IsEnabled)
                 {
                     if (b.SoulButton == 0)
                     {

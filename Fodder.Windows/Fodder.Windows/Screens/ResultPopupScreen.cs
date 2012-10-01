@@ -174,14 +174,14 @@ namespace Fodder.Windows.GameState
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(texBG, centerPos + new Vector2(-(texBG.Width / 2), popupTop), new Rectangle(0, 0, texBG.Width, 30), Color.White * TransitionAlpha);
+            spriteBatch.Draw(texBG, centerPos + new Vector2(-(texBG.Width / 2), popupTop), new Rectangle(0, 0, texBG.Width, 30), Color.White * 0.5f * TransitionAlpha);
             popupTop += 30;
-            spriteBatch.Draw(texBG, centerPos + new Vector2(-(texBG.Width / 2), popupTop), new Rectangle(0, 30, texBG.Width, 120), Color.White * TransitionAlpha);
+            spriteBatch.Draw(texBG, centerPos + new Vector2(-(texBG.Width / 2), popupTop), new Rectangle(0, 30, texBG.Width, 120), Color.White * 0.5f * TransitionAlpha);
             spriteBatch.DrawString(largeFont, resultText, centerPos + new Vector2(0, popupTop+60), Color.White * TransitionAlpha, 0f, largeFont.MeasureString(resultText) / 2, 1f, SpriteEffects.None, 1);
             popupTop += 120;
             if (resultText == "Victory")
             {
-                spriteBatch.Draw(texBG, centerPos + new Vector2(-(texBG.Width / 2), popupTop), new Rectangle(0, 150, texBG.Width, 120), Color.White * TransitionAlpha);
+                spriteBatch.Draw(texBG, centerPos + new Vector2(-(texBG.Width / 2), popupTop), new Rectangle(0, 150, texBG.Width, 120), Color.White * 0.5f * TransitionAlpha);
 
                 Vector2 starPos = centerPos + new Vector2(-(texBG.Width / 2), popupTop) + new Vector2(80, 62);
                 for(int i=0;i<numStars;i++)
@@ -189,7 +189,7 @@ namespace Fodder.Windows.GameState
 
                 popupTop += 120;
             }
-            spriteBatch.Draw(texBG, centerPos + new Vector2(-(texBG.Width / 2), popupTop), new Rectangle(0, 270, texBG.Width, 30), Color.White * TransitionAlpha);
+            spriteBatch.Draw(texBG, centerPos + new Vector2(-(texBG.Width / 2), popupTop), new Rectangle(0, 270, texBG.Width, 30), Color.White * 0.5f * TransitionAlpha);
             
             
 

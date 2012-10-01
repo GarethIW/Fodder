@@ -8,8 +8,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
-using Fodder.Core.UX;
+using Fodder.GameState;
 
 namespace Fodder.Core
 {
@@ -82,12 +83,14 @@ namespace Fodder.Core
         AIController AI1 = new AIController();
         AIController AI2 = new AIController();
 
-        private IHumanPlayerControls PlayerControls;
+        public double StartCountdown;
+        float prepareTransition;
+        float fightTransition;
 
-        public GameSession(IHumanPlayerControls playerControls, GameClientType t1CT, GameClientType t2CT, Scenario scenario, Viewport vp, bool attractmode)
+        SpriteFont largeFont;
+
+        public GameSession(GameClientType t1CT, GameClientType t2CT, Scenario scenario, Viewport vp, bool attractmode)
         {
-            if (playerControls == null)
-                throw new ArgumentException("GameSession cannot be created without PlayerControls");
 
             Instance = this;
 
@@ -126,7 +129,9 @@ namespace Fodder.Core
 
             ScreenBottom = (IsAttractMode ? 0 : 60);
 
-            this.PlayerControls = playerControls;
+            StartCountdown = (IsAttractMode ? 0 : 4000);
+            prepareTransition = (IsAttractMode ?0f:1f);
+            fightTransition = 0f;
 
             Map = new Map(scenario.MapName);
         }
@@ -139,41 +144,41 @@ namespace Fodder.Core
             ProjectileController.LoadContent(content);
             ParticleController.LoadContent(content);
             HUD.LoadContent(content);
-
             Map.LoadContent(content, false);
+
+            largeFont = content.Load<SpriteFont>("largefont");
         }
 
         public void Update(GameTime gameTime)
         {
             Map.Update(gameTime);
+            HUD.Update(gameTime);
+
+            if (StartCountdown > 0)
+            {
+                StartCountdown -= gameTime.ElapsedGameTime.TotalMilliseconds;
+                CalculateWinConditions(gameTime);
+                if ((int)StartCountdown < 1000)
+                {
+                    fightTransition += 0.1f;
+                    prepareTransition -= 0.2f;
+                    if (Team1ClientType == GameClientType.Human) Map.PanTo(2f, new Vector2(0, Map.Path[0]));
+                    if (Team2ClientType == GameClientType.Human) Map.PanTo(2f, new Vector2(Map.Width, Map.Path[Map.Width - 1]));
+                    fightTransition = MathHelper.Clamp(fightTransition, 0f, 1f);
+                    prepareTransition = MathHelper.Clamp(prepareTransition, 0f, 1f);
+                }
+                return;
+            }
+            else
+                fightTransition -= 0.1f;
+
             DudeController.Update(gameTime);
 
             if (Team1ClientType == GameClientType.AI) AI1.Update(gameTime, 0);
             if (Team2ClientType == GameClientType.AI) AI2.Update(gameTime, 1);
 
-            if (!IsAttractMode)
-            {
-                if (this.PlayerControls.Reset) this.Reset();
-
-                var zoomDir = this.PlayerControls.Zoom;
-                if (zoomDir == ZoomDirection.In) this.Map.DoZoom(1.3f);
-                if (zoomDir == ZoomDirection.Out) this.Map.DoZoom(0.7f);
-
-                var scroll = 0f;
-                if (this.PlayerControls.Scroll == ScrollDirection.Right) scroll = -10f;
-                if (this.PlayerControls.Scroll == ScrollDirection.Left) scroll = 10f;
-                if (this.PlayerControls.IsPhone) scroll = scroll * 6;
-                if (scroll != 0f) this.Map.DoScroll(new Vector2(scroll, 0f));
-
-                if (Team1ClientType == GameClientType.Human) DudeController.HandleInput(this.PlayerControls, 0);
-                if (Team2ClientType == GameClientType.Human) DudeController.HandleInput(this.PlayerControls, 1);
-
-                ButtonController.Update(gameTime);
-                ButtonController.HandleInput(this.PlayerControls);
-            }
-
+            ButtonController.Update(gameTime);
             SoulController.Update(gameTime);
-            HUD.Update(gameTime);
             ProjectileController.Update(gameTime);
             ParticleController.Update(gameTime);
 
@@ -185,6 +190,44 @@ namespace Fodder.Core
             {
                 Team1Reinforcements = 100;
                 Team2Reinforcements = 100;
+
+                if (Map.T1Flag.RaisedHeight == 16) Team1SoulCount++;
+                if (Map.T2Flag.RaisedHeight == 16) Team2SoulCount++;
+            }
+        }
+
+        public void HandleInput(InputState input)
+        {
+            if (!IsAttractMode && !Team1Win && !Team2Win && StartCountdown<=0)
+            {
+                var kbscroll = Vector2.Zero;
+                if (input.CurrentKeyboardStates[0].IsKeyDown(Keys.D)) kbscroll.X = 10f;
+                if (input.CurrentKeyboardStates[0].IsKeyDown(Keys.A)) kbscroll.X = -10f;
+                if (input.CurrentKeyboardStates[0].IsKeyDown(Keys.W)) kbscroll.Y = -10f;
+                if (input.CurrentKeyboardStates[0].IsKeyDown(Keys.S)) kbscroll.Y = 10f;
+                if (kbscroll != Vector2.Zero) this.Map.DoScroll(kbscroll);
+
+                if (input.PinchGesture.HasValue)
+                {
+                    this.Map.DoZoom(input.GetScaleFactor(input.PinchGesture.Value));
+                }
+                if (input.DragGesture.HasValue)
+                {
+                    this.Map.DoScroll(new Vector2(-input.DragGesture.Value.Delta.X, input.DragGesture.Value.Delta.Y) * 3f);
+                }
+                if (input.MouseDragging)
+                {
+                    this.Map.DoScroll(new Vector2(-input.MouseDelta.X, input.MouseDelta.Y));
+                }
+                if (input.CurrentMouseState.ScrollWheelValue > input.LastMouseState.ScrollWheelValue) this.Map.DoZoom(1.03f);
+                if (input.CurrentMouseState.ScrollWheelValue < input.LastMouseState.ScrollWheelValue) this.Map.DoZoom(0.97f);
+
+                if (Team1ClientType == GameClientType.Human) DudeController.HandleInput(input, 0);
+                if (Team2ClientType == GameClientType.Human) DudeController.HandleInput(input, 1);
+
+                ButtonController.HandleInput(input);
+
+
             }
         }
 
@@ -204,6 +247,20 @@ namespace Fodder.Core
                 ButtonController.Draw(spriteBatch);
                 HUD.Draw(spriteBatch);
             }
+
+            spriteBatch.Begin();
+            if (prepareTransition > 0)
+            {
+                spriteBatch.DrawString(largeFont, "Prepare for Battle", (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) + Vector2.One, Color.Black * prepareTransition, 0f, largeFont.MeasureString("Prepare for Battle") / 2, 0.5f, SpriteEffects.None, 1);
+                spriteBatch.DrawString(largeFont, "Prepare for Battle", new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2, Color.White * prepareTransition, 0f, largeFont.MeasureString("Prepare for Battle") / 2, 0.5f, SpriteEffects.None, 1);
+            }
+            if (fightTransition > 0f)
+            {
+                spriteBatch.DrawString(largeFont, "Fight", (new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2) + Vector2.One, Color.Black * fightTransition, 0f, largeFont.MeasureString("Fight") / 2, 1f + (1f - fightTransition), SpriteEffects.None, 1);
+                spriteBatch.DrawString(largeFont, "Fight", new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height) / 2, Color.White * fightTransition, 0f, largeFont.MeasureString("Fight") / 2, 1f + (1f - fightTransition), SpriteEffects.None, 1);
+            }
+
+            spriteBatch.End();
         }
 
         public void Reset()
@@ -213,6 +270,10 @@ namespace Fodder.Core
 
             Team1DeadCount = 0;
             Team2DeadCount = 0;
+
+            prepareTransition = 1f;
+            fightTransition = 0f;
+            StartCountdown = 4000f;
 
             Team1Win = false;
             Team2Win = false;
@@ -233,6 +294,7 @@ namespace Fodder.Core
             Team2ActiveCount = 0;
             Team1PlantedCount = 0;
             Team2PlantedCount = 0;
+
             foreach (Dude d in DudeController.Dudes)
             {
                 if (d.Active)
@@ -245,12 +307,21 @@ namespace Fodder.Core
                         if(!d.Weapon.IsInRange)
                             if (d.Team == 0) Team1PlantedCount++; else Team2PlantedCount++;
 
-                    if (d.Team == 0 && d.Position.X > Map.Width) Team1Win = true;
-                    if (d.Team == 1 && d.Position.X < 0) Team2Win = true;
+                    //if (d.Team == 0 && d.Position.X > Map.Width) Team1Win = true;
+                    //if (d.Team == 1 && d.Position.X < 0) Team2Win = true;
                 }
             }
 
-            if(Team1Reinforcements==0 && Team2Reinforcements==0)
+            if (Map.T1Flag.RaisedHeight == 16) Team2Win = true;
+            if (Map.T2Flag.RaisedHeight == 16) Team1Win = true;
+
+            // Don't do anything until there's no projectiles left!
+            foreach (Projectile p in ProjectileController.Projectiles)
+            {
+                if (p.Active) return;
+            }
+
+            if(Team1Reinforcements==0 || Team2Reinforcements==0)
             {
                 if (Team1ActiveCount == 0 || Team2ActiveCount == 0)
                 {
@@ -269,7 +340,9 @@ namespace Fodder.Core
                 }
             }
 
+            
 
+            if (Team1Win || Team2Win) Map.PanTo(0f, Vector2.Zero);
         }
        
     }

@@ -59,12 +59,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fodder.Core\Fodder.Core.csproj">
-      <Project>{7DFA4F42-2CD3-4CC3-B654-B6A185CF3E8D}</Project>
-      <Name>Fodder.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

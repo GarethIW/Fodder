@@ -80,7 +80,7 @@ namespace Fodder.Core
             foreach (Particle p in Particles)
             {
                 sb.Draw(_texParticles, 
-                        -GameSession.Instance.Map.ScrollPos + (new Vector2(0, (sb.GraphicsDevice.Viewport.Height- GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (p.Position * GameSession.Instance.Map.Zoom)),
+                         new Vector2(-GameSession.Instance.Map.ScrollPos.X, GameSession.Instance.Map.ScrollPos.Y + ((GameSession.Instance.Viewport.Height - GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom))) + (p.Position * GameSession.Instance.Map.Zoom),
                         p.SourceRect, Color.White * p.Alpha, p.Rotation, new Vector2(p.SourceRect.Width / 2, p.SourceRect.Height / 2), GameSession.Instance.Map.Zoom, SpriteEffects.None, 1);
             }
 

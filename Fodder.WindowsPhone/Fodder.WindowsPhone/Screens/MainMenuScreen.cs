@@ -78,7 +78,7 @@ namespace Fodder.Phone.GameState
         /// </summary>
         void CampaignGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            ScreenManager.AddScreen(new CampaignScreen(1, null), e.PlayerIndex);
+            ScreenManager.AddScreen(new CampaignScreen(-1, null), e.PlayerIndex);
         }
 
         void QuickGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)

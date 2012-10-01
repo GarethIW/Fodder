@@ -11,7 +11,7 @@
     </Function>
     <Function>
       <Name>shield</Name>
-      <CoolDown>10000</CoolDown>
+      <CoolDown>15000</CoolDown>
       <IsEnabled>true</IsEnabled>
     </Function>
     <Function>
@@ -60,13 +60,17 @@
       <IsEnabled>true</IsEnabled>
     </Function>
   </AvailableFunctions>
-  <AIReactionTime>5000</AIReactionTime>
-  <T1Reinforcements>100</T1Reinforcements>
-  <T2Reinforcements>100</T2Reinforcements>
-  <T1SpawnRate>2000</T1SpawnRate>
-  <T2SpawnRate>2000</T2SpawnRate>
-  <MapName>campaign2</MapName>
-  <ScenarioName>Onward, Virgin Soldiers</ScenarioName>
+  <AIReactionTime>8000</AIReactionTime>
+  <T1Reinforcements>75</T1Reinforcements>
+  <T2Reinforcements>75</T2Reinforcements>
+  <T1SpawnRate>3200</T1SpawnRate>
+  <T2SpawnRate>3200</T2SpawnRate>
+  <MapName>campaign10</MapName>
+  <ScenarioName>Up to the Plateau</ScenarioName>
+  <BronzeScore>0</BronzeScore>
+  <SilverScore>30</SilverScore>
+  <GoldScore>70</GoldScore>
+  <CampaignMissionNum>10</CampaignMissionNum>
 </Scenario>]]>
   </Asset>
 </XnaContent>

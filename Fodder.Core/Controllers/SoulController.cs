@@ -60,7 +60,7 @@ namespace Fodder.Core
                    if (s.Team == 1) GameSession.Instance.Team2SoulCount++; 
                 }
 
-                s.ScreenRelativePosition = -GameSession.Instance.Map.ScrollPos + (new Vector2(0, (GameSession.Instance.Viewport.Height- GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom)) + (s.Position * GameSession.Instance.Map.Zoom));
+                s.ScreenRelativePosition = new Vector2(-GameSession.Instance.Map.ScrollPos.X, GameSession.Instance.Map.ScrollPos.Y + ((GameSession.Instance.Viewport.Height - GameSession.Instance.ScreenBottom) - (GameSession.Instance.Map.Height * GameSession.Instance.Map.Zoom))) + (s.Position * GameSession.Instance.Map.Zoom);
 
                 if (s.Position.Y < 0)
                 {
@@ -107,7 +107,7 @@ namespace Fodder.Core
             if (team == 0)
             {
                 int y = -800;
-                for (int x = -800; x < GameSession.Instance.Map.Width - 200; x += 200)
+                for (int x = 0; x < GameSession.Instance.Map.Width - (GameSession.Instance.Map.Width/3); x += 200)
                 {
                     GameSession.Instance.ProjectileController.Add(new Vector2(x, y), new Vector2(0f, 10f), 1.5f, true, true, 300, 0);
                     y -=200;
@@ -116,7 +116,7 @@ namespace Fodder.Core
             if (team == 1)
             {
                 int y = -800;
-                for (int x = GameSession.Instance.Map.Width + 800; x > 200; x -= 200)
+                for (int x = GameSession.Instance.Map.Width; x > (GameSession.Instance.Map.Width / 3); x -= 200)
                 {
                     GameSession.Instance.ProjectileController.Add(new Vector2(x, y), new Vector2(-0f, 10f), 1.5f, true, true, 300, 1);
                     y -= 200;

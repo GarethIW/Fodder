@@ -17,7 +17,6 @@ using Microsoft.Xna.Framework.Input;
 using Fodder.GameState;
 using System.Collections.Generic;
 using Fodder.Core;
-using Fodder.WindowsPhone.UX;
 using Microsoft.Xna.Framework.Input.Touch;
 #endregion
 
@@ -37,8 +36,6 @@ namespace Fodder.Phone.GameState
         GameSession gameSession;
         Scenario gameScenario;
 
-        WindowsPhonePlayerControls playerControls;
-
         bool resultReached;
 
         #endregion
@@ -56,7 +53,7 @@ namespace Fodder.Phone.GameState
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
-            this.EnabledGestures = GestureType.Tap | GestureType.Pinch | GestureType.HorizontalDrag;
+            this.EnabledGestures = GestureType.Pinch | GestureType.Tap | GestureType.FreeDrag;
 
             IsStubbourn = true;
         }
@@ -79,10 +76,7 @@ namespace Fodder.Phone.GameState
             funcs.Add(new Function("machinegun", 30000, true));
             funcs.Add(new Function("mortar", 30000, true));
 
-            playerControls = new WindowsPhonePlayerControls(new TouchObserver(), new ButtonObserver());
-
-
-            gameSession = new GameSession(playerControls, GameClientType.Human, GameClientType.AI, gameScenario, ScreenManager.GraphicsDevice.Viewport, false);
+            gameSession = new GameSession(GameClientType.Human, GameClientType.AI, gameScenario, ScreenManager.GraphicsDevice.Viewport, false);
             gameSession.LoadContent(content);
 
             ScreenManager.Game.ResetElapsedTime();
@@ -146,7 +140,7 @@ namespace Fodder.Phone.GameState
             if (input == null)
                 throw new ArgumentNullException("input");
 
-            this.playerControls.Update(input);
+            //this.playerControls.Update(input);
 
             if (input.IsPauseGame(ControllingPlayer))
             {
@@ -154,6 +148,8 @@ namespace Fodder.Phone.GameState
                 ScreenManager.AddScreen(pauseBG, ControllingPlayer);
                 ScreenManager.AddScreen(new PauseMenuScreen(pauseBG), ControllingPlayer);
             }
+
+            gameSession.HandleInput(input);
         }
 
 
